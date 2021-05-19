@@ -1,0 +1,7 @@
+/home/tonix/Documents/CINVESTAV/Proyecto_Lime/LMS7002M-driver/build/CMakeFiles/install/strip.dir
+/home/tonix/Documents/CINVESTAV/Proyecto_Lime/LMS7002M-driver/build/CMakeFiles/edit_cache.dir
+/home/tonix/Documents/CINVESTAV/Proyecto_Lime/LMS7002M-driver/build/CMakeFiles/LMS7002M.dir
+/home/tonix/Documents/CINVESTAV/Proyecto_Lime/LMS7002M-driver/build/CMakeFiles/rebuild_cache.dir
+/home/tonix/Documents/CINVESTAV/Proyecto_Lime/LMS7002M-driver/build/CMakeFiles/list_install_components.dir
+/home/tonix/Documents/CINVESTAV/Proyecto_Lime/LMS7002M-driver/build/CMakeFiles/install/local.dir
+/home/tonix/Documents/CINVESTAV/Proyecto_Lime/LMS7002M-driver/build/CMakeFiles/install.dir

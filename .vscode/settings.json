@@ -1,0 +1,6 @@
+{
+    "files.associations": {
+        "lms7002m_logger.h": "c",
+        "lms7002m.h": "c"
+    }
+}
