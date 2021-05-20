@@ -6,3 +6,5 @@ For this project it used platformio compiler based on a riscV mounted in a FPGA
 RAM:3.6% (used 9292 bytes from 256000 bytes)
 
 Flash: 33.0% (used 84548 bytes from 256000 bytes)
+
+Project is setup in platformio.ini which is avilable as an extension of VScode. 
