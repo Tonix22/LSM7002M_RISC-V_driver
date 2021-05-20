@@ -9,3 +9,5 @@ Flash: 33.0% (used 84548 bytes from 256000 bytes)
 
 ### Compile the project
 Project setup is in platformio Vscode Extension. To compile open platformio and select coprocesorInt folder, then select dupin_barmetal-> build all
+
+![Alt Text](/Documentation/Images/Compile.gif)
