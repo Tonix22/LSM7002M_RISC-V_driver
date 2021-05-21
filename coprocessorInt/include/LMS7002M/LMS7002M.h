@@ -82,10 +82,9 @@ typedef struct LMS7002M_struct LMS7002M_t;
  * See LMS7002M_init(...) and LMS7002M_reset(...).
  *
  * \param transact the SPI transaction function
- * \param handle arbitrary handle data for transact
  * \return a new instance of the LMS7002M driver
  */
-LMS7002M_API LMS7002M_t *LMS7002M_create(LMS7002M_spi_transact_t transact);
+LMS7002M_API LMS7002M_t* LMS7002M_create(LMS7002M_spi_transact_t transact);
 
 /*!
  * Destroy an instance of the LMS7002M driver.
