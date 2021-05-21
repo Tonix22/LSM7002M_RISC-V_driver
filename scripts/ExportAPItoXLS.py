@@ -19,7 +19,7 @@ path = os.getcwd()+file
 
 with open('LimeAPI.csv', 'w', newline='') as xlsx:
     writer = csv.writer(xlsx)
-    header = ["SN", "API Name", "API Description","P1_t","P2_t","P3_t","P4_t","P1 info","P2 info","P3 info","P4 info","Return_t", "Return info"]
+    header = ["SN", "API Name", "API Description","P1_t","P2_t","P3_t","P4_t","P5_t","P6_t","P1 info","P2 info","P3 info","P4 info","P5 info","P6 info","Return_t", "Return info"]
     writer.writerow(header)
 
 with open(path) as file:
@@ -36,8 +36,8 @@ with open(path) as file:
     API_Name = ""
     API_Description  = ""
     types_idx = 0
-    Ptypes      = ["None","None","None","None"]
-    Ptypes_info = ["None","None","None","None"]
+    Ptypes      = ["None","None","None","None","None","None"]
+    Ptypes_info = ["None","None","None","None","None","None"]
     API_return_type  = "void"
     API_return_info  = "None"
 
@@ -98,8 +98,8 @@ with open(path) as file:
                 word_end = Param_end
                 P_type_begin = Param_begin
                 
-                print(API_line[P_type_begin:P_type_end])
-                print(API_line[word_begin:word_end])
+                #print(API_line[P_type_begin:P_type_end])
+                #print(API_line[word_begin:word_end])
 
                 Ptypes[types_idx]      = API_line[P_type_begin:P_type_end]
                 Ptypes_info[types_idx] = API_line[word_begin:word_end]
@@ -116,10 +116,14 @@ with open(path) as file:
             API_metada.append(Ptypes[1])
             API_metada.append(Ptypes[2])
             API_metada.append(Ptypes[3])
+            API_metada.append(Ptypes[4])
+            API_metada.append(Ptypes[5])
             API_metada.append(Ptypes_info[0])
             API_metada.append(Ptypes_info[1])
             API_metada.append(Ptypes_info[2])
             API_metada.append(Ptypes_info[3])
+            API_metada.append(Ptypes_info[4])
+            API_metada.append(Ptypes_info[5])
             API_metada.append(API_return_type)
             API_metada.append(API_return_info)
             with open('LimeAPI.csv', 'a+', newline='') as xlsx:
@@ -130,8 +134,8 @@ with open(path) as file:
             API_Name = ""
             API_Description  = ""
             types_idx = 0
-            Ptypes      = ["None","None","None","None"]
-            Ptypes_info = ["None","None","None","None"]
+            Ptypes      = ["None","None","None","None","None","None"]
+            Ptypes_info = ["None","None","None","None","None","None"]
             API_return_type  = "void"
             API_return_info  = "None"
             
@@ -149,9 +153,9 @@ with open(path) as file:
             data = data[content[i].find(" ")+1:]
             Ptypes_info[types_idx] = data
             types_idx+=1
-            print (data)
+            #print (data)
 
         if (state == State.return_sec_description):
             data = data[content[i].find(" ")+1:]
             API_return_info = data
-            print (data)
+           #print (data)
