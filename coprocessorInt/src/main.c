@@ -15,8 +15,6 @@
 
 #include "platform.h"
 
-//#include "spidev_interface.h"
-//#include "sysfs_gpio_interface.h"
 //#include "xilinx_user_gpio.h"
 
 /*

@@ -4,58 +4,64 @@
 #include "util.h"
 
 
-typedef enum
+typedef enum 
 {
-    GET_RX_RSSI_ID         = 0xA466,
+    CREATE_NUM,
+    ONE_PARAM_LMS7002M_T_NUM,
+    SPI_WRITE_NUM,
+    SPI_CONFIG_NUM,
+    INI_NUM,
+    CONFIGURE_LML_PORT_NUM,
+    ONE_PARAM_CONST_BOOL_NUM,
+    ONE_PARAM_LMS7002M_CHAN_NUM,
+    TWO_PARAM_LMS7002M_DIR_INT_NUM,
+    LDO_ENABLE_NUM,
+    AFE_ENABLE_NUM,
+    SET_DATA_CLOCK_NUM,
+    SET_NCO_FREQ_NUM,
+    SET_GFIR_TAPS_NUM,
+    SET_LO_FREQ_NUM,
+    TWO_PARAM_LMS_CONST_BOOL_NUM,
+    TWO_PARAM_CHANT_SIZET_NUM,
+    SP_TSG_NUM,
+    TXSTP_CORRECTION_NUM,
+    RXTSP_NUM,
+    SET_PATH_AND_BAND_NUM,
+    TBB_LOOP_BACK_ENABLE_NUM,
+    BB_FILER_SET_NUM,
+    TRF_RBB_RFE_NUM,
+    READRSSI_NUM,
+    OPCODE_SIZE,
+}OPCODE_enum;
 
-    SET_RX_FIR_CONFIG_ID   = 0x1885,
-    GET_RX_FIR_CONFIG_ID   = 0xC496,
-    SET_TX_FIR_CONFIG_ID   = 0x1C89,
-    GET_TX_FIR_CONFIG_ID   = 0xE49A,
-    TRX_LOAD_ENABLE_FIR_ID = 0xF9BC,
-    
-    RX_FASTLOCK_LOAD_ID    = 0x2914,
-    TX_FASTLOCK_LOAD_ID    = 0x2918,
-    RX_FASTLOCK_SAVE_ID    = 0x2924,
-    TX_FASTLOCK_SAVE_ID    = 0x2928,
-    
-    SET_TRX_PATH_CLKS_ID   = 0x496D,
-    
-    SPECIAL_SIZE = 11
-}Special_ids_t;
-
-typedef enum
+struct ANYTYPE
 {
-    GAIN_DEC,
-    COEFCIENTS,
-    LAST,
+    enum {
+      typUndefined,
+      typInt,           // 1
+      typUint,
+      typString,
+      typLong
+    } iType;
 
-}FIR_STAGE;
-typedef enum{
-    NA,
-    SET,
-    GET,
-    DO,
-}Encapsulators;
+    union
+    {
+        bool b;
+        char enum_type;
+        int sint;
+        const int const_int;
+        unsigned int uint;
+        char* string;
+        short* short_p;
+        long l;
+        double d;
+        double* d_pointer;
+        size_t size;
+    } value;
 
-typedef enum
-{
-    EMPTY_PARAM,
-    NOT_SIGNED_8_BIT,
-    NOT_SIGNED_32_BIT,
-    SIGNED_32_BIT,
-    SIGNED_64_BIT,
-    STRUCT_TYPE ,
-    RXFIR_TYPE  ,
-    TXFIR_TYPE,
-}Param_types;
+}typedef Geric_Parameter;
 
-typedef struct p_list
-{
-    Param_types P1;
-    Param_types P2;
-    uint32_t opcode;
-}paramaters_pair;
+
 
 typedef struct Action
 {
@@ -68,7 +74,7 @@ void push_special (uint32_t* mem);
 void pull_special(uint32_t* mem);
 void push_param(uint32_t var,unsigned char idx);
 void set_opcode_to_ptypes(long opcode);
-paramaters_pair* get_opcode_types();
+
 
 
 #endif
