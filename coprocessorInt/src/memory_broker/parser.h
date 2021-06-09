@@ -65,7 +65,6 @@ struct ANYTYPE
 
 typedef struct Action
 {
-    uint32_t ID;
     void* foo;
 }Caller;
 
