@@ -60,12 +60,12 @@
 #define FPGA_REG_WR_TX_TEST 36
 
 /*
-static inline double estimate_clock_rate(void *regs, int offset)
+static inline float estimate_clock_rate(void *regs, int offset)
 {
     uint32_t t0 = xumem_read32(regs, offset);
     sleep(1);
     uint32_t t1 = xumem_read32(regs, offset);
-    return ((double)(t1 - t0));
+    return ((float)(t1 - t0));
 }
 */
 
@@ -103,7 +103,7 @@ int main()
      ********************************/
 
     //turn the clocks on
-    double actualRate = 0.0;
+    float actualRate = 0.0;
     ret = LMS7002M_set_data_clock(lms, REF_FREQ, 61.44e6, &actualRate);
     if (ret != 0)
     {
@@ -205,7 +205,7 @@ int main()
     {
         LMS7002M_rxtsp_tsg_const(lms, LMS_CHA, 0, 1 << i);
         sleep(1);
-        //printf("Const lvl = %f, RSSI = %f\n", (1 << i)/((double)(1 << 15)), LMS7002M_rxtsp_read_rssi(lms, LMS_CHA));
+        //printf("Const lvl = %f, RSSI = %f\n", (1 << i)/((float)(1 << 15)), LMS7002M_rxtsp_read_rssi(lms, LMS_CHA));
     }
     */
 

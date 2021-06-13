@@ -14,7 +14,7 @@
 #include <stdlib.h>
 #include "LMS7002M_impl.h"
 
-void LMS7002M_set_nco_freq(LMS7002M_t *self, const LMS7002M_dir_t direction, const LMS7002M_chan_t channel, const double freqRel)
+void LMS7002M_set_nco_freq(LMS7002M_t *self, const LMS7002M_dir_t direction, const LMS7002M_chan_t channel, const float freqRel)
 {
     LMS7002M_set_mac_ch(self, channel);
 

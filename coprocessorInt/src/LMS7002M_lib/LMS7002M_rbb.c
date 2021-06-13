@@ -82,7 +82,7 @@ void LMS7002M_rbb_set_test_out(LMS7002M_t *self, const LMS7002M_chan_t channel, 
     LMS7002M_regs_spi_write(self, 0x0119);
 }
 
-double LMS7002M_rbb_set_pga(LMS7002M_t *self, const LMS7002M_chan_t channel, const double gain)
+float LMS7002M_rbb_set_pga(LMS7002M_t *self, const LMS7002M_chan_t channel, const float gain)
 {
     LMS7002M_set_mac_ch(self, channel);
 

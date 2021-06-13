@@ -49,10 +49,10 @@ void LMS7002M_trf_enable_loopback(LMS7002M_t *self, const LMS7002M_chan_t channe
     LMS7002M_regs_spi_write(self, 0x0101);
 }
 
-double LMS7002M_trf_set_pad(LMS7002M_t *self, const LMS7002M_chan_t channel, const double gain)
+float LMS7002M_trf_set_pad(LMS7002M_t *self, const LMS7002M_chan_t channel, const float gain)
 {
-    const double pmax = 0;
-    double loss = pmax-gain;
+    const float pmax = 0;
+    float loss = pmax-gain;
 
     //different scaling realm
     if (loss > 10) loss = (loss+10)/2;
@@ -73,10 +73,10 @@ double LMS7002M_trf_set_pad(LMS7002M_t *self, const LMS7002M_chan_t channel, con
     return pmax-loss_int;
 }
 
-double LMS7002M_trf_set_loopback_pad(LMS7002M_t *self, const LMS7002M_chan_t channel, const double gain)
+float LMS7002M_trf_set_loopback_pad(LMS7002M_t *self, const LMS7002M_chan_t channel, const float gain)
 {
     //there are 4 discrete gain values, use the midpoints
-    double actual = 0.0;
+    float actual = 0.0;
     int val = 0;
     if      (gain >= (-1.4-0)/2)   val = 0, actual = 0.0;
     else if (gain >= (-1.4-3.3)/2) val = 1, actual = -1.4;

@@ -54,8 +54,8 @@ struct ANYTYPE
         char* string;
         short* short_p;
         long l;
-        double d;
-        double* d_pointer;
+        float f;
+        float* f_pointer;
         size_t size;
     } value;
 

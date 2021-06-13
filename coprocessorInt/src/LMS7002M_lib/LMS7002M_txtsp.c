@@ -53,7 +53,7 @@ void LMS7002M_txtsp_set_interp(LMS7002M_t *self, const LMS7002M_chan_t channel, 
     LMS7002M_regs_spi_write(self, 0x0203);
 }
 
-void LMS7002M_txtsp_set_freq(LMS7002M_t *self, const LMS7002M_chan_t channel, const double freqRel)
+void LMS7002M_txtsp_set_freq(LMS7002M_t *self, const LMS7002M_chan_t channel, const float freqRel)
 {
     LMS7002M_set_mac_ch(self, channel);
     self->regs->reg_0x0208_cmix_byp = (freqRel==0.0)?1:0;
@@ -108,8 +108,8 @@ void LMS7002M_txtsp_tsg_tone(LMS7002M_t *self, const LMS7002M_chan_t channel)
 void LMS7002M_txtsp_set_dc_correction(
     LMS7002M_t *self,
     const LMS7002M_chan_t channel,
-    const double valI,
-    const double valQ)
+    const float valI,
+    const float valQ)
 {
     LMS7002M_set_mac_ch(self, channel);
 
@@ -125,8 +125,8 @@ void LMS7002M_txtsp_set_dc_correction(
 void LMS7002M_txtsp_set_iq_correction(
     LMS7002M_t *self,
     const LMS7002M_chan_t channel,
-    const double phase,
-    const double gain)
+    const float phase,
+    const float gain)
 {
     LMS7002M_set_mac_ch(self, channel);
 

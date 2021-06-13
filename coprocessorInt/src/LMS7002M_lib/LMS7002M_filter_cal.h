@@ -25,4 +25,4 @@ void set_addrs_to_default(LMS7002M_t *self, const LMS7002M_chan_t channel, const
 int cal_gain_selection(LMS7002M_t *self, const LMS7002M_chan_t channel);
 
 //! Helper to setup clocking for calibration
-int cal_setup_cgen(LMS7002M_t *self, const double bw);
+int cal_setup_cgen(LMS7002M_t *self, const float bw);

@@ -27,11 +27,11 @@ struct LMS7002M_struct
     //active register shadow ptr based on MIMO channel setting
     LMS7002M_regs_t *regs;
 
-    double cgen_freq; //!< last written CGEN frequency in Hz
-    double sxr_freq; //!< last written RX frequency in Hz
-    double sxt_freq; //!< last written TX frequency in Hz
+    float cgen_freq; //!< last written CGEN frequency in Hz
+    float sxr_freq; //!< last written RX frequency in Hz
+    float sxt_freq; //!< last written TX frequency in Hz
 
-    double cgen_fref; //!< last written CGEN ref frequency in Hz
-    double sxr_fref; //!< last written RX ref frequency in Hz
-    double sxt_fref; //!< last written TX ref frequency in Hz
+    float cgen_fref; //!< last written CGEN ref frequency in Hz
+    float sxr_fref; //!< last written RX ref frequency in Hz
+    float sxt_fref; //!< last written TX ref frequency in Hz
 };

@@ -15,7 +15,7 @@
 #include "LMS7002M_vco.h"
 #include <LMS7002M/LMS7002M_logger.h>
 
-int LMS7002M_set_data_clock(LMS7002M_t *self, const double fref, const double fout, double *factual)
+int LMS7002M_set_data_clock(LMS7002M_t *self, const float fref, const float fout, float *factual)
 {
     LMS7_logf(LMS7_INFO, "CGEN tune %f MHz (fref=%f MHz) begin", fout/1e6, fref/1e6);
 
@@ -27,8 +27,8 @@ int LMS7002M_set_data_clock(LMS7002M_t *self, const double fref, const double fo
     // fvco / fdiv = fout
     // fref * N = fout * fdiv
     int fdiv = 512+2;
-    double Ndiv = 0;
-    double fvco = 0;
+    float Ndiv = 0;
+    float fvco = 0;
    
     //calculation loop to find dividers that are possible
     while (true)
@@ -117,7 +117,7 @@ int LMS7002M_set_data_clock(LMS7002M_t *self, const double fref, const double fo
     LMS7002M_regs_spi_write(self, 0x0086);
 
     //calculate the actual rate
-    if (factual != NULL) *factual = fref * (Nint + (Nfrac/((double)(1 << 20)))) / fdiv;
+    if (factual != NULL) *factual = fref * (Nint + (Nfrac/((float)(1 << 20)))) / fdiv;
     
     return 0; //OK
 }
