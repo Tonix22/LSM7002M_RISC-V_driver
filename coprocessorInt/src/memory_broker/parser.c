@@ -7,8 +7,8 @@
 #define ENUM(n) Params[n].value.enum_type
 #define CONSINT(n) Params[n].value.const_int
 #define BOOLEAN(n) Params[n].value.b
-#define FLOAT(n)  Params[n].value.f
-#define FLOAT_POINTER(n)  Params[n].value.f_pointer
+#define DOUBLE(n)  Params[n].value.d
+#define DOUBLE_POINTER(n)  Params[n].value.d_pointer
 #define SHORT_POINTER(n)  Params[n].value.short_p
 #define SIZE_TYPE(n) Params[n].value.size
 
@@ -96,13 +96,13 @@ Caller AFE_enable[] =
     {&LMS7002M_afe_enable},
     
 };
-typedef int callback_11(LMS7002M_t *, const float , const float , float *);
+typedef int callback_11(LMS7002M_t *, const double , const double , double *);
 Caller Set_data_clock[] =
 {
     {&LMS7002M_set_data_clock},
     
 };
-typedef void callback_12(LMS7002M_t *, const LMS7002M_dir_t , const LMS7002M_chan_t , const float );
+typedef void callback_12(LMS7002M_t *, const LMS7002M_dir_t , const LMS7002M_chan_t , const double );
 Caller Set_nco_freq[]  =
 {
     {&LMS7002M_set_nco_freq},
@@ -120,7 +120,7 @@ Caller Set_gfir_taps[] =
     {&LMS7002M_set_gfir_taps}
 };
 
-typedef int callback_14(LMS7002M_t *, const LMS7002M_dir_t , const float , const float , float *);
+typedef int callback_14(LMS7002M_t *, const LMS7002M_dir_t , const double , const double , double *);
 Caller Set_lo_freq[]  =
 {
     {&LMS7002M_set_lo_freq}
@@ -155,7 +155,7 @@ Caller sp_tsg [] =
     {&LMS7002M_rxtsp_tsg_const},
 };
 
-typedef void callback_18(LMS7002M_t *,const LMS7002M_chan_t,const float,const float);
+typedef void callback_18(LMS7002M_t *,const LMS7002M_chan_t,const double,const double);
 Caller txstp_correction [] =
 {
     {&LMS7002M_txtsp_set_dc_correction},
@@ -188,7 +188,7 @@ Caller Tbb_loop_Back_enable [] =
     
 };
 
-typedef int callback_22(LMS7002M_t *, const LMS7002M_chan_t , const float , float *);
+typedef int callback_22(LMS7002M_t *, const LMS7002M_chan_t , const double , double *);
 Caller bb_filer_set []=
 {
     {&LMS7002M_tbb_set_filter_bw},
@@ -197,7 +197,7 @@ Caller bb_filer_set []=
 };
 
 
-typedef float callback_23(LMS7002M_t *,const LMS7002M_chan_t, const float);
+typedef double callback_23(LMS7002M_t *,const LMS7002M_chan_t, const double);
 Caller trf_rbb_rfe [] = 
 {
     {&LMS7002M_txtsp_set_freq},
@@ -294,14 +294,14 @@ void search_by_ID(LMS7002M_t *lms, int ID)
                                 BOOLEAN(2));
         break;
     case SET_DATA_CLOCK_NUM:
-        ((callback_11*)foo)(lms,FLOAT(0),
-                                FLOAT(1),
-                                FLOAT_POINTER(2));
+        ((callback_11*)foo)(lms,DOUBLE(0),
+                                DOUBLE(1),
+                                DOUBLE_POINTER(2));
         break;
     case SET_NCO_FREQ_NUM:
         ((callback_12*)foo)(lms,ENUM(0),
                                 ENUM(1),
-                                FLOAT(1));
+                                DOUBLE(1));
         break;
     case SET_GFIR_TAPS_NUM:
         ((callback_13*)foo)(lms,ENUM(0),
@@ -312,9 +312,9 @@ void search_by_ID(LMS7002M_t *lms, int ID)
         break;
     case SET_LO_FREQ_NUM:
         ((callback_14*)foo)(lms,ENUM(0),
-                                FLOAT(1),
-                                FLOAT(2),
-                                FLOAT_POINTER(3));
+                                DOUBLE(1),
+                                DOUBLE(2),
+                                DOUBLE_POINTER(3));
         break;
     case TWO_PARAM_LMS_CONST_BOOL_NUM:
         ((callback_15*)foo)(lms,ENUM(0),
@@ -331,8 +331,8 @@ void search_by_ID(LMS7002M_t *lms, int ID)
         break;
     case TXSTP_CORRECTION_NUM:
         ((callback_18*)foo)(lms,ENUM(0),
-                                FLOAT(1),
-                                FLOAT(2));
+                                DOUBLE(1),
+                                DOUBLE(2));
         break;
     case RXTSP_NUM:
         ((callback_19*)foo)(lms,ENUM(0),
@@ -350,12 +350,12 @@ void search_by_ID(LMS7002M_t *lms, int ID)
         break;
     case BB_FILER_SET_NUM:
         ((callback_22*)foo)(lms,ENUM(0),
-                                FLOAT(1),
-                                FLOAT_POINTER(2));
+                                DOUBLE(1),
+                                DOUBLE_POINTER(2));
         break;
     case TRF_RBB_RFE_NUM:
         ((callback_23*)foo)(lms,ENUM(0),
-                                FLOAT(1));
+                                DOUBLE(1));
         break;
     case READRSSI_NUM:
         ((READ_rssi*)foo)(lms,ENUM(0));

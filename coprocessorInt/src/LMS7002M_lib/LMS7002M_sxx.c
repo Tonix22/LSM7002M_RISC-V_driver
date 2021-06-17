@@ -30,10 +30,10 @@ void LMS7002M_sxx_enable(LMS7002M_t *self, const LMS7002M_dir_t direction, const
 typedef struct
 {
     int DIV_LOCH_SX;
-    float Ndiv;
+    double Ndiv;
     int Nint;
     int Nfrac;
-    float fvco;
+    double fvco;
     int fdiv;
     int EN_DIV2;
     bool good;
@@ -41,8 +41,8 @@ typedef struct
 LMS7002M_sxx_tune_state;
 
 int LMS7002M_sxx_calc_tune_state(
-    const float fref, const float fout,
-    const float VCO_LO, const float VCO_HI,
+    const double fref, const double fout,
+    const double VCO_LO, const double VCO_HI,
     LMS7002M_sxx_tune_state *s)
 {
     //The equations:
@@ -125,7 +125,7 @@ void LMS7002M_sxx_apply_tune_state(LMS7002M_t *self, const LMS7002M_sxx_tune_sta
     LMS7002M_regs_spi_write(self, 0x011f);
 }
 
-int LMS7002M_set_lo_freq(LMS7002M_t *self, const LMS7002M_dir_t direction, const float fref, const float fout, float *factual)
+int LMS7002M_set_lo_freq(LMS7002M_t *self, const LMS7002M_dir_t direction, const double fref, const double fout, double *factual)
 {
     LMS7_logf(LMS7_INFO, "SXX tune %f MHz (fref=%f MHz) begin", fout/1e6, fref/1e6);
 
@@ -202,7 +202,7 @@ int LMS7002M_set_lo_freq(LMS7002M_t *self, const LMS7002M_dir_t direction, const
     if (direction == LMS_TX) self->sxt_fref = fref;
 
     //calculate the actual rate
-    if (factual != NULL) *factual = (1 << s->EN_DIV2) * fref * ((s->Nint+4) + (s->Nfrac/((float)(1 << 20)))) / s->fdiv;
+    if (factual != NULL) *factual = (1 << s->EN_DIV2) * fref * ((s->Nint+4) + (s->Nfrac/((double)(1 << 20)))) / s->fdiv;
 
     return 0; //OK
 }

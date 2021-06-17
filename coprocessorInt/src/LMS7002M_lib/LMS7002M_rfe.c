@@ -90,10 +90,10 @@ void LMS7002M_rfe_set_path(LMS7002M_t *self, const LMS7002M_chan_t channel, cons
     LMS7002M_trf_enable_loopback(self, channel, enb_trf_loopback);
 }
 
-float LMS7002M_rfe_set_lna(LMS7002M_t *self, const LMS7002M_chan_t channel, const float gain)
+double LMS7002M_rfe_set_lna(LMS7002M_t *self, const LMS7002M_chan_t channel, const double gain)
 {
-    const float gmax = 30;
-    float val = gain - gmax;
+    const double gmax = 30;
+    double val = gain - gmax;
 
     LMS7002M_set_mac_ch(self, channel);
 
@@ -118,10 +118,10 @@ float LMS7002M_rfe_set_lna(LMS7002M_t *self, const LMS7002M_chan_t channel, cons
     return val + gmax;
 }
 
-float LMS7002M_rfe_set_loopback_lna(LMS7002M_t *self, const LMS7002M_chan_t channel, const float gain)
+double LMS7002M_rfe_set_loopback_lna(LMS7002M_t *self, const LMS7002M_chan_t channel, const double gain)
 {
-    const float gmax = 40;
-    float val = gain - gmax;
+    const double gmax = 40;
+    double val = gain - gmax;
 
     LMS7002M_set_mac_ch(self, channel);
 
@@ -147,10 +147,10 @@ float LMS7002M_rfe_set_loopback_lna(LMS7002M_t *self, const LMS7002M_chan_t chan
     return val + gmax;
 }
 
-float LMS7002M_rfe_set_tia(LMS7002M_t *self, const LMS7002M_chan_t channel, const float gain)
+double LMS7002M_rfe_set_tia(LMS7002M_t *self, const LMS7002M_chan_t channel, const double gain)
 {
-    const float gmax = 12;
-    float val = gain - gmax;
+    const double gmax = 12;
+    double val = gain - gmax;
 
     LMS7002M_set_mac_ch(self, channel);
 
