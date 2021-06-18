@@ -1,17 +1,6 @@
 #include "LMS7002M.h"
 #include "parser.h"
 
-#define MAX_PARAMETERS 5
-#define INT(n) Params[n].value.sint
-#define STR(n) Params[n].value.string
-#define ENUM(n) Params[n].value.enum_type
-#define CONSINT(n) Params[n].value.const_int
-#define BOOLEAN(n) Params[n].value.b
-#define DOUBLE(n)  Params[n].value.d
-#define DOUBLE_POINTER(n)  Params[n].value.d_pointer
-#define SHORT_POINTER(n)  Params[n].value.short_p
-#define SIZE_TYPE(n) Params[n].value.size
-
 Geric_Parameter Params[MAX_PARAMETERS];
 
 typedef LMS7002M_t* create_cb(LMS7002M_spi_transact_t );
@@ -193,7 +182,6 @@ Caller bb_filer_set []=
 {
     {&LMS7002M_tbb_set_filter_bw},
     {&LMS7002M_rbb_set_filter_bw},
-    
 };
 
 
@@ -229,21 +217,23 @@ Caller* Group [OPCODE_SIZE] =
     &Two_Param_LMS7002M_dir_int[0],
     &LDO_enable[0],
     &AFE_enable[0],
-    &Set_data_clock[0],
-    &Set_nco_freq[0],
+    &Set_data_clock[0], // double 
+    &Set_nco_freq[0], // double
     &Set_gfir_taps[0],
-    &Set_lo_freq[0],
+    &Set_lo_freq[0], // double 
     &Two_Param_LMS_const_bool[0],
     &Two_Param_chant_sizet[0],
     &sp_tsg[0],
-    &txstp_correction[0],
+    &txstp_correction[0], // double
     &rxtsp[0],
     &set_path_and_band[0],
     &Tbb_loop_Back_enable[0],
-    &bb_filer_set[0],
-    &trf_rbb_rfe[0],
+    &bb_filer_set[0],//double
+    &trf_rbb_rfe[0],//double
     &ReadRSSI[0]
 };
+
+
 
 void search_by_ID(LMS7002M_t *lms, int ID)
 {
@@ -301,7 +291,7 @@ void search_by_ID(LMS7002M_t *lms, int ID)
     case SET_NCO_FREQ_NUM:
         ((callback_12*)foo)(lms,ENUM(0),
                                 ENUM(1),
-                                DOUBLE(1));
+                                DOUBLE(2));
         break;
     case SET_GFIR_TAPS_NUM:
         ((callback_13*)foo)(lms,ENUM(0),

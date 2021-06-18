@@ -3,7 +3,19 @@
 #include "LMS7002M.h"
 #include "util.h"
 
+#define MAX_PARAMETERS 5
+#define INT(n) Params[n].value.sint
+#define STR(n) Params[n].value.string
+#define ENUM(n) Params[n].value.enum_type
+#define CONSINT(n) Params[n].value.const_int
+#define BOOLEAN(n) Params[n].value.b
+#define DOUBLE(n)  Params[n].value.d
+#define DOUBLE_POINTER(n)  Params[n].value.d_pointer
+#define SHORT_POINTER(n)  Params[n].value.short_p
+#define SIZE_TYPE(n) Params[n].value.size
 
+
+void search_by_ID(LMS7002M_t *lms, int ID);
 typedef enum 
 {
     CREATE_NUM,
@@ -34,16 +46,10 @@ typedef enum
     OPCODE_SIZE,
 }OPCODE_enum;
 
+
+
 struct ANYTYPE
 {
-    enum {
-      typUndefined,
-      typInt,           // 1
-      typUint,
-      typString,
-      typLong
-    } iType;
-
     union
     {
         bool b;

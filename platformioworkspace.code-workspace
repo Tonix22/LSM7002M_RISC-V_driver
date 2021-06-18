@@ -22,7 +22,10 @@
 			"tuple": "c",
 			"type_traits": "c",
 			"utility": "c",
-			"chrono": "c"
+			"chrono": "c",
+			"hash_map": "c",
+			"string_view": "c",
+			"initializer_list": "c"
 		}
 	}
 }
