@@ -17,7 +17,7 @@
 
 int LMS7002M_set_data_clock(LMS7002M_t *self, const double fref, const double fout, double *factual)
 {
-    LMS7_logf(LMS7_INFO, "CGEN tune %f MHz (fref=%f MHz) begin", fout/1e6, fref/1e6);
+    //LMS7_logf(LMS7_INFO, "CGEN tune %f MHz (fref=%f MHz) begin", fout/1e6, fref/1e6);
 
     //always use the channel A shadow, CGEN is in global register space
     LMS7002M_set_mac_ch(self, LMS_CHA);
@@ -38,7 +38,7 @@ int LMS7002M_set_data_clock(LMS7002M_t *self, const double fref, const double fo
 
         Ndiv = fout*fdiv/fref;
         fvco = fout*fdiv;
-        LMS7_logf(LMS7_TRACE, "Trying: fdiv = %d, Ndiv = %f, fvco = %f MHz", fdiv, Ndiv, fvco/1e6);
+        //LMS7_logf(LMS7_TRACE, "Trying: fdiv = %d, Ndiv = %f, fvco = %f MHz", fdiv, Ndiv, fvco/1e6);
 
         //check dividers and vco in range...
         if (fdiv < 2) return -1;
@@ -53,7 +53,7 @@ int LMS7002M_set_data_clock(LMS7002M_t *self, const double fref, const double fo
         break; //its good
     }
 
-    LMS7_logf(LMS7_DEBUG, "Using: fdiv = %d, Ndiv = %f, fvco = %f MHz", fdiv, Ndiv, fvco/1e6);
+    //LMS7_logf(LMS7_DEBUG, "Using: fdiv = %d, Ndiv = %f, fvco = %f MHz", fdiv, Ndiv, fvco/1e6);
 
     //stash the freq now that we know the loop above passed
     self->cgen_freq = fout;
@@ -93,7 +93,7 @@ int LMS7002M_set_data_clock(LMS7002M_t *self, const double fref, const double fo
     self->regs->reg_0x0087_frac_sdm_cgen = (Nfrac) & 0xffff; //lower 16 bits
     self->regs->reg_0x0088_frac_sdm_cgen = (Nfrac) >> 16; //upper 4 bits
     self->regs->reg_0x0088_int_sdm_cgen = Nint-1;
-    LMS7_logf(LMS7_DEBUG, "fdiv = %d, Ndiv = %f, Nint = %d, Nfrac = %d, fvco = %f MHz", fdiv, Ndiv, Nint, Nfrac, fvco/1e6);
+    //LMS7_logf(LMS7_DEBUG, "fdiv = %d, Ndiv = %f, Nint = %d, Nfrac = %d, fvco = %f MHz", fdiv, Ndiv, Nint, Nfrac, fvco/1e6);
     LMS7002M_regs_spi_write(self, 0x0087);
     LMS7002M_regs_spi_write(self, 0x0088);
 

@@ -67,28 +67,32 @@ int double_specials(uint8_t* Group_ID)
             Assing_double(P_idx(1),D_idx(4),D_idx(3));
             Params[2].value.d_pointer = &actualSamplingFreq;
         break; 
+        
         case SET_NCO_FREQ_NUM : 
             Params[0].value.enum_type = data[1];
             Params[1].value.enum_type = data[2];
             Assing_double(P_idx(2),D_idx(4),D_idx(3));
         break; 
+        
         case SET_LO_FREQ_NUM : 
             Params[0].value.enum_type = data[1];
             Assing_double(P_idx(1),D_idx(3),D_idx(2));
             Assing_double(P_idx(2),D_idx(5),D_idx(4));
             Params[3].value.d_pointer = &actualLoFreq;
         break; 
+        
         case TXSTP_CORRECTION_NUM : 
             Params[0].value.enum_type = data[1];
             Assing_double(P_idx(1),D_idx(3),D_idx(2));
             Assing_double(P_idx(2),D_idx(5),D_idx(4));
         break; 
+        
         case BB_FILER_SET_NUM : 
             Params[0].value.enum_type = data[1];
             Assing_double(P_idx(1),D_idx(3),D_idx(2));
             Params[2].value.d_pointer = &actualBw;
-
         break; 
+        
         case TRF_RBB_RFE_NUM : 
             Params[0].value.enum_type = data[1];
             Assing_double(P_idx(1),D_idx(3),D_idx(2));
@@ -106,9 +110,9 @@ void interpreter()
     uint8_t Group_ID = data[0] & 31; // only get first 5 bits
     if(NO == double_specials(&Group_ID)) // not special 
     {
-        for(int i=0;i<MAX_PARAMETERS;i++)
+        for(int i=0;i < MAX_PARAMETERS; i++)
         {
-            Params[i].value.uint = data[i+1];
+            Params[i].value.bit_32 = data[i+1];
         }
     }
 }

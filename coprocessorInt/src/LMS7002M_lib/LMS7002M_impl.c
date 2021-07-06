@@ -192,13 +192,13 @@ int LMS7002M_load_ini(LMS7002M_t *self, const char *path)
         {
             if (strcmp(line, "[LMS7002 registers ch.A]") == 0)
             {
-                LMS7_logf(LMS7_INFO, "Found section %s", line);
+                //LMS7_logf(LMS7_INFO, "Found section %s", line);
                 write_reg_ok = true;
                 chan = LMS_CHA;
             }
             else if (strcmp(line, "[LMS7002 registers ch.B]") == 0)
             {
-                LMS7_logf(LMS7_INFO, "Found section %s", line);
+                //LMS7_logf(LMS7_INFO, "Found section %s", line);
                 write_reg_ok = true;
                 chan = LMS_CHB;
             }
@@ -215,7 +215,7 @@ int LMS7002M_load_ini(LMS7002M_t *self, const char *path)
                 LMS7002M_set_mac_ch(self, chan);
                 LMS7002M_spi_write(self, addr, value);
                 LMS7002M_regs_set(self->regs, addr, value);
-                LMS7_logf(LMS7_DEBUG, "Load: 0x%04x=0x%04x", addr, value);
+                //LMS7_logf(LMS7_DEBUG, "Load: 0x%04x=0x%04x", addr, value);
             }
         }
 

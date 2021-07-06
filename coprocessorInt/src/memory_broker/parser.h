@@ -63,6 +63,7 @@ struct ANYTYPE
         double d;
         double* d_pointer;
         size_t size;
+        uint32_t bit_32;
     } value;
 
 }typedef Geric_Parameter;

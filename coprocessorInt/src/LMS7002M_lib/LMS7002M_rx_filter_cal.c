@@ -32,7 +32,7 @@ static int setup_rx_cal_tone(LMS7002M_t *self, const LMS7002M_chan_t channel, co
     LMS7002M_set_mac_ch(self, channel);
     if (status != 0)
     {
-        LMS7_logf(LMS7_ERROR, "LMS7002M_set_lo_freq(LMS_RX, %f MHz)", sxr_freq/1e6);
+        //LMS7_logf(LMS7_ERROR, "LMS7002M_set_lo_freq(LMS_RX, %f MHz)", sxr_freq/1e6);
         goto done;
     }
     double rxtsp_rate = self->cgen_freq/4;
@@ -69,7 +69,7 @@ static int rx_cal_loop(
     {
         if (iter++ == MAX_CAL_LOOP_ITERS)
         {
-            LMS7_logf(LMS7_ERROR, "failed to converge when calibrating %s", reg_name);
+            //LMS7_logf(LMS7_ERROR, "failed to converge when calibrating %s", reg_name);
             return -1;
         }
 
@@ -80,11 +80,11 @@ static int rx_cal_loop(
         if (rssi_value < rssi_value_50k*0.7071 && adjust > 0) break;
         if (*reg_ptr == 0 || *reg_ptr == reg_max)
         {
-            LMS7_logf(LMS7_ERROR, "failed to cal %s -> %d", reg_name, *reg_ptr);
+            //LMS7_logf(LMS7_ERROR, "failed to cal %s -> %d", reg_name, *reg_ptr);
             return -1;
         }
     }
-    LMS7_logf(LMS7_DEBUG, "%s = %d", reg_name, *reg_ptr);
+    //LMS7_logf(LMS7_DEBUG, "%s = %d", reg_name, *reg_ptr);
     return 0;
 }
 
@@ -166,7 +166,7 @@ static int rx_cal_init(LMS7002M_t *self, const LMS7002M_chan_t channel)
     LMS7002M_set_mac_ch(self, channel);
     if (status != 0)
     {
-        LMS7_logf(LMS7_ERROR, "LMS7002M_set_lo_freq(LMS_TX, %f MHz)", sxt_freq/1e6);
+        //LMS7_logf(LMS7_ERROR, "LMS7002M_set_lo_freq(LMS_TX, %f MHz)", sxt_freq/1e6);
         goto done;
     }
 
@@ -213,7 +213,7 @@ static int rx_cal_tia_rfe(LMS7002M_t *self, const LMS7002M_chan_t channel, const
     //--- check filter bounds ---//
     if (bw < 0.5e6 || bw > 60e6)
     {
-        LMS7_logf(LMS7_ERROR, "TIA bandwidth not in range[0.5 to 60 MHz]");
+        //LMS7_logf(LMS7_ERROR, "TIA bandwidth not in range[0.5 to 60 MHz]");
         status = -1;
         goto done;
     }
@@ -233,7 +233,7 @@ static int rx_cal_tia_rfe(LMS7002M_t *self, const LMS7002M_chan_t channel, const
     }
     else
     {
-        LMS7_logf(LMS7_ERROR, "g_tia_rfe must be [1, 2, or 3], got %d", g_tia_rfe_user);
+        //LMS7_logf(LMS7_ERROR, "g_tia_rfe must be [1, 2, or 3], got %d", g_tia_rfe_user);
         status = -1;
         goto done;
     }
@@ -274,7 +274,7 @@ static int rx_cal_rbb_lpfl(LMS7002M_t *self, const LMS7002M_chan_t channel, cons
     //--- check filter bounds ---//
     if (bw < 0.5e6 || bw > 20e6)
     {
-        LMS7_logf(LMS7_ERROR, "LPFL bandwidth not in range[0.5 to 20 MHz]");
+        //LMS7_logf(LMS7_ERROR, "LPFL bandwidth not in range[0.5 to 20 MHz]");
         status = -1;
         goto done;
     }
@@ -319,7 +319,7 @@ static int rx_cal_rbb_lpfh(LMS7002M_t *self, const LMS7002M_chan_t channel, cons
     //--- check filter bounds ---//
     if (bw < 20e6 || bw > 60e6)
     {
-        LMS7_logf(LMS7_ERROR, "LPFH bandwidth not in range[0.5 to 60 MHz]");
+        //LMS7_logf(LMS7_ERROR, "LPFH bandwidth not in range[0.5 to 60 MHz]");
         return -1;
     }
 
@@ -363,17 +363,17 @@ int LMS7002M_rbb_set_filter_bw(LMS7002M_t *self, const LMS7002M_chan_t channel, 
     //check for initialized reference frequencies
     if (self->cgen_fref == 0.0)
     {
-        LMS7_logf(LMS7_ERROR, "cgen_fref not initialized");
+        //LMS7_logf(LMS7_ERROR, "cgen_fref not initialized");
         return -1;
     }
     if (self->sxr_fref == 0.0)
     {
-        LMS7_logf(LMS7_ERROR, "sxr_fref not initialized");
+        //LMS7_logf(LMS7_ERROR, "sxr_fref not initialized");
         return -1;
     }
     if (self->sxt_fref == 0.0)
     {
-        LMS7_logf(LMS7_ERROR, "sxt_fref not initialized");
+        //LMS7_logf(LMS7_ERROR, "sxt_fref not initialized");
         return -1;
     }
 
@@ -389,7 +389,7 @@ int LMS7002M_rbb_set_filter_bw(LMS7002M_t *self, const LMS7002M_chan_t channel, 
     status = cal_setup_cgen(self, bw);
     if (status != 0)
     {
-        LMS7_logf(LMS7_ERROR, "cal_setup_cgen() faled");
+        //LMS7_logf(LMS7_ERROR, "cal_setup_cgen() faled");
         goto done;
     }
 
@@ -399,7 +399,7 @@ int LMS7002M_rbb_set_filter_bw(LMS7002M_t *self, const LMS7002M_chan_t channel, 
     status = rx_cal_init(self, channel);
     if (status != 0)
     {
-        LMS7_logf(LMS7_ERROR, "rx_cal_init() failed");
+        //LMS7_logf(LMS7_ERROR, "rx_cal_init() failed");
         goto done;
     }
 
@@ -409,7 +409,7 @@ int LMS7002M_rbb_set_filter_bw(LMS7002M_t *self, const LMS7002M_chan_t channel, 
     status = rx_cal_tia_rfe(self, channel, bw);
     if (status != 0)
     {
-        LMS7_logf(LMS7_ERROR, "rx_cal_tia_rfe() failed");
+        //LMS7_logf(LMS7_ERROR, "rx_cal_tia_rfe() failed");
         goto done;
     }
 
@@ -419,7 +419,7 @@ int LMS7002M_rbb_set_filter_bw(LMS7002M_t *self, const LMS7002M_chan_t channel, 
     status = rx_cal_init(self, channel);
     if (status != 0)
     {
-        LMS7_logf(LMS7_ERROR, "rx_cal_init() failed");
+        //LMS7_logf(LMS7_ERROR, "rx_cal_init() failed");
         goto done;
     }
 
@@ -430,7 +430,7 @@ int LMS7002M_rbb_set_filter_bw(LMS7002M_t *self, const LMS7002M_chan_t channel, 
     if (path == LMS7002M_RBB_HBF) status = rx_cal_rbb_lpfh(self, channel, bw);
     if (status != 0)
     {
-        LMS7_logf(LMS7_ERROR, "rx_cal_rbb_lpf() failed");
+        //LMS7_logf(LMS7_ERROR, "rx_cal_rbb_lpf() failed");
         goto done;
     }
 
