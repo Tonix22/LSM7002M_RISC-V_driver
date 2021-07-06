@@ -44,9 +44,9 @@ void LMS7_sleep_until(const long long ticks)
         if (left < 0) break; //time expired -> done here
 
         //otherwise sleep for the time left
-        struct timeval tv;
-        tv.tv_sec = left/LMS7_time_tps();
-        tv.tv_usec = left%LMS7_time_tps();
+        //struct timeval tv;
+        //tv.tv_sec = left/LMS7_time_tps();
+        //tv.tv_usec = left%LMS7_time_tps();
         //select(1, NULL, NULL, NULL, &tv);
     }
 }

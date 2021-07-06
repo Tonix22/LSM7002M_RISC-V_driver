@@ -24,7 +24,7 @@
 #define SCLK_MIO 12
 #define SEN_MIO 13
 */
-
+#define SPI_DEVICE_ID				0
 #define REF_FREQ (61.44e6/2)
 
 #define EMIO_OFFSET 54
@@ -59,15 +59,8 @@
 #define FPGA_REG_WR_DATA_B 32 //TXB data for loopback test
 #define FPGA_REG_WR_TX_TEST 36
 
-/*
-static inline double estimate_clock_rate(void *regs, int offset)
-{
-    uint32_t t0 = xumem_read32(regs, offset);
-    sleep(1);
-    uint32_t t1 = xumem_read32(regs, offset);
-    return ((double)(t1 - t0));
-}
-*/
+#define CPOL 0
+#define CPHA 1
 
 
 int main()
@@ -82,13 +75,15 @@ int main()
      *******SPI INTERFACE************
      ********************************/
     int ret = 0;
-
     //create and test lms....
     //printf("Create LMS7002M instance\n");
+    spi_init(SPI_DEVICE_ID, CPHA, CPOL);
     LMS7002M_t *lms = LMS7002M_create(spidev_interface_transact);
+    
+    spidev_interface_transact(0xBABACAFE,false);
+    
     LMS7002M_reset(lms);
     LMS7002M_set_spi_mode(lms, 4); //set 4-wire spi before reading back
-
     /********************************
      **********LMS STATUS************
      ********************************/

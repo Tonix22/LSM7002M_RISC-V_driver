@@ -175,7 +175,8 @@ int LMS7002M_load_ini(LMS7002M_t *self, const char *path)
     {
         char *line = NULL;
         size_t n = 0;
-        int ret = getline(&line, &n, p);
+        //int ret = getline(&line, &n, p);
+        int ret = 0;
         if (ret < 0)
         {
             free(line);
