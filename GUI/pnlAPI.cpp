@@ -7,15 +7,7 @@
 #include <wx/spinctrl.h>
 #include <wx/panel.h>
 
-
-class wxChoice;
-class wxStaticText;
-class wxFlexGridSizer;
-class pnlGPIO;
-
-
 using namespace std;
-//using namespace lime;
 
 enum Buttons {
     btnInit,
@@ -46,12 +38,10 @@ bool MyApp::OnInit()
 }
 
 pnlAPI::pnlAPI() :
-    wxFrame(NULL, wxID_ANY, "API Calls"),
+    wxFrame(NULL, wxID_ANY, "API Calls", wxDefaultPosition, wxDefaultSize, wxDEFAULT_DIALOG_STYLE | wxRESIZE_BORDER),
     lmsControl(nullptr)
     ////lmsAppFrame(parent)
 {
-    
-    
     SetBackgroundColour(wxSystemSettings::GetColour(wxSYS_COLOUR_BTNFACE));
     wxFlexGridSizer* mainSizer;
     runButtons.resize(btn_COUNT);
@@ -297,28 +287,3 @@ void pnlAPI::OnAntDir( wxCommandEvent& event )
     setAntAnt->SetSelection(0);
     */
 }
-/*
-void pnlAPI::Initialize(lms_device_t* controlPort)
-{
-    lmsControl = controlPort;
-
-    if (lmsControl)
-    {
-        for (auto ctrl : chControls)
-            ctrl->Clear();
-        for (int i = 0; i< LMS_GetNumChannels(lmsControl, false); i++)
-        {
-            auto txt = wxString::Format(_("ch %i"), i);
-            for (auto ctrl : chControls)
-                ctrl->Append(txt);
-        }
-        for (auto ctrl : chControls)
-            ctrl->SetSelection(0);
-        {
-            wxCommandEvent evt;
-            evt.SetInt(0);
-            OnAntDir(evt);
-        }
-    }
-}
-*/
