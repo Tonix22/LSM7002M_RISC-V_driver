@@ -14,7 +14,7 @@
 #include <stdlib.h>
 
 #include "platform.h"
-
+#include "broker.h"
 //#include "xilinx_user_gpio.h"
 
 /*
@@ -80,7 +80,7 @@ int main()
     spi_init(SPI_DEVICE_ID, CPHA, CPOL);
     LMS7002M_t *lms = LMS7002M_create(spidev_interface_transact);
     
-    spidev_interface_transact(0xBABACAFE,false);
+    //spidev_interface_transact(0xBABACAFE,false);
     
     LMS7002M_reset(lms);
     LMS7002M_set_spi_mode(lms, 4); //set 4-wire spi before reading back
@@ -90,6 +90,7 @@ int main()
 
     //read info register
     LMS7002M_regs_spi_read(lms, 0x002f);
+    Broker(lms);
     //printf("rev 0x%x\n", LMS7002M_regs(lms)->reg_0x002f_rev);
     //printf("ver 0x%x\n", LMS7002M_regs(lms)->reg_0x002f_ver);
 

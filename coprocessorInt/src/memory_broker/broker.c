@@ -14,17 +14,14 @@
 #define P_idx(x) x
 #define D_idx(x) x
 
-#define Assing_double(num,data_0,data_1) merger      = (data_64[data_0]<<32 | data_64[data_1]);\
-                                         interpreter = &merger;\
-                                         Params[num].value.d =*interpreter;           
+#define Assing_double(num,data_0,data_1) merger = (data_64[data_0]<<32 | data_64[data_1]);\
+                                         Params[num].value.d =(double)merger;           
 
 
 //external sources
 extern volatile DataStat ISR_FLAG;
 extern Geric_Parameter Params[MAX_PARAMETERS];
-
 //extern Special_ids_t     Special_Opcodes[SPECIAL_SIZE];
-extern uint32_t          FLIP_VALUES[2];
 
 /*read_memory globals*/
 uint32_t data[MAX_READ_SIZE];
@@ -58,7 +55,6 @@ int double_specials(uint8_t* Group_ID)
     int is_special = YES;
     uint64_t data_64[] = {0,data[1],data[2],data[3],data[4],data[5]};
     uint64_t merger = 0;
-    double*  interpreter = NULL;
 
     switch (*Group_ID)
     {
@@ -192,7 +188,7 @@ void send_response()
 void Broker(LMS7002M_t *lms)
 {
     int_isr();
-    clear_OUT_BUFF();
+    ISR_FLAG = IDLE;
 	for(;;)
 	{
 		if(ISR_FLAG == READ) // when an start is sent
@@ -202,9 +198,8 @@ void Broker(LMS7002M_t *lms)
             interpreter();
 			search_by_ID(lms, data[0]);
             send_response();
-            memset(FLIP_VALUES,0,2*sizeof(uint32_t));   
             ISR_FLAG = IDLE;
-		}
+        }
 	}
 }
 
