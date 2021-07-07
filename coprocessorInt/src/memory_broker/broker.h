@@ -20,14 +20,6 @@ void Broker(LMS7002M_t *lms);
 
 typedef enum
 {
-    IDLE ,
-    READ ,
-    WRITE,
-    HOLD
-}DataStat;
-
-typedef enum
-{
     NORMAL,
     SPECIAL_SET,
     SPECIAL_GET,

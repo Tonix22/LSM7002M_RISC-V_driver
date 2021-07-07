@@ -6,7 +6,7 @@
 #include <stdbool.h>
 #include "aip.h"
 
-//volatile DataStat ISR_FLAG = 0;
+volatile DataStat ISR_FLAG = 0;
 
 void trap()
 {
@@ -44,7 +44,7 @@ void externalInterrupt ()
 		switch(claim){
 			case PLIC_INT_0:
 				// bsp_uart_write_string(UART_CONSOLE, "PLIC_INT_0\n");
-				//ISR_FLAG = READ;
+				ISR_FLAG = READ;
 				break;
 			case PLIC_INT_1:
 				// bsp_uart_write_string(UART_CONSOLE, "PLIC_INT_1\n");
