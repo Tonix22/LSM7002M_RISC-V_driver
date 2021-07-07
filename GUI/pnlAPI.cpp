@@ -71,7 +71,7 @@ pnlAPI::pnlAPI() :
         runButtons[btn] = new wxButton(this, wxID_ANY, wxT("Run"), wxDefaultPosition, wxDefaultSize, 0);
         mainSizer->Add( runButtons[btn], 0, wxALL, 1 );
         mainSizer->Add(new wxStaticText(this, wxID_ANY, label), 0, wxALL|wxALIGN_CENTER_VERTICAL, 5);
-        //runButtons[btn]->Connect(wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( pnlAPI::OnRun), NULL, this );
+        runButtons[btn]->Connect(wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( pnlAPI::OnRun), NULL, this );
         auto paramSizer = new wxFlexGridSizer( 1, 0, 5, 5);
         for (auto a : args)
             paramSizer->Add(a, 0, wxALL|wxALIGN_CENTER_VERTICAL, 1);
@@ -176,10 +176,7 @@ pnlAPI::pnlAPI() :
 
 pnlAPI::~pnlAPI()
 {
-    // Disconnect Events
-    //setAntDir->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( pnlAPI::OnAntDir ), NULL, this );
-    //for (auto btn : runButtons)
-        //btn->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( pnlAPI::OnRun ), NULL, this );
+    Close(true);
 }
 
 void pnlAPI::OnRun( wxCommandEvent& event )
@@ -187,6 +184,7 @@ void pnlAPI::OnRun( wxCommandEvent& event )
     auto obj = event.GetEventObject();
     if (obj == runButtons[btnInit])
     {
+        printf("Init Proyect\r\n");
         //LMS_Init(lmsControl);
         //lmsAppFrame->UpdateVisiblePanel();
     }
@@ -209,6 +207,8 @@ void pnlAPI::OnRun( wxCommandEvent& event )
     {
         double freq = 0;
         setFreqFreq->GetValue().ToDouble(&freq);
+        printf("frequency: %f\r\n",freq);
+        printf("Direction: %d\r\n",setFreqDir->GetSelection());
         //LMS_SetLOFrequency(lmsControl, setFreqDir->GetSelection(), setFreqCh->GetSelection(), freq*1e6);
         //lmsAppFrame->UpdateVisiblePanel();
     }
