@@ -1,6 +1,5 @@
 #include "pnlAPI.h"
 #include "wx/wxprec.h"
-#include "lime/LimeSuite.h"
 #ifndef WX_PRECOMP
 #include <wx/wx.h>
 #endif //WX_PRECOMP
@@ -9,7 +8,8 @@
 
 using namespace std;
 
-enum Buttons {
+enum Buttons
+{
     btnInit,
     btnEnCh,
     btnSetRate,
@@ -37,19 +37,18 @@ bool MyApp::OnInit()
     return true;
 }
 
-pnlAPI::pnlAPI() :
-    wxFrame(NULL, wxID_ANY, "API Calls", wxDefaultPosition, wxDefaultSize, wxDEFAULT_DIALOG_STYLE | wxRESIZE_BORDER),
-    lmsControl(nullptr)
-    ////lmsAppFrame(parent)
+pnlAPI::pnlAPI() : wxFrame(NULL, wxID_ANY, "API Calls", wxDefaultPosition, wxDefaultSize, wxDEFAULT_DIALOG_STYLE | wxRESIZE_BORDER)
+////lmsAppFrame(parent)
 {
     SetBackgroundColour(wxSystemSettings::GetColour(wxSYS_COLOUR_BTNFACE));
-    wxFlexGridSizer* mainSizer;
+    wxFlexGridSizer *mainSizer;
     runButtons.resize(btn_COUNT);
-    mainSizer = new wxFlexGridSizer( 0, 3, 1, 1);
-    mainSizer->AddGrowableCol( 2 );
-    mainSizer->SetFlexibleDirection( wxBOTH );
-    mainSizer->SetNonFlexibleGrowMode( wxFLEX_GROWMODE_SPECIFIED );
-    auto dirChoice = [this](){
+    mainSizer = new wxFlexGridSizer(0, 3, 1, 1);
+    mainSizer->AddGrowableCol(2);
+    mainSizer->SetFlexibleDirection(wxBOTH);
+    mainSizer->SetNonFlexibleGrowMode(wxFLEX_GROWMODE_SPECIFIED);
+    auto dirChoice = [this]()
+    {
         auto choice = new wxChoice(this, wxID_ANY);
         choice->Append("RX");
         choice->Append("TX");
@@ -57,15 +56,16 @@ pnlAPI::pnlAPI() :
         return choice;
     };
 
-    auto functionEntry = [this, mainSizer](Buttons btn, wxString label, std::vector<wxWindow*>args){
+    auto functionEntry = [this, mainSizer](Buttons btn, wxString label, std::vector<wxWindow *> args)
+    {
         runButtons[btn] = new wxButton(this, wxID_ANY, wxT("Run"), wxDefaultPosition, wxDefaultSize, 0);
-        mainSizer->Add( runButtons[btn], 0, wxALL, 1 );
-        mainSizer->Add(new wxStaticText(this, wxID_ANY, label), 0, wxALL|wxALIGN_CENTER_VERTICAL, 5);
-        runButtons[btn]->Connect(wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( pnlAPI::OnRun), NULL, this );
-        auto paramSizer = new wxFlexGridSizer( 1, 0, 5, 5);
+        mainSizer->Add(runButtons[btn], 0, wxALL, 1);
+        mainSizer->Add(new wxStaticText(this, wxID_ANY, label), 0, wxALL | wxALIGN_CENTER_VERTICAL, 5);
+        runButtons[btn]->Connect(wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler(pnlAPI::OnRun), NULL, this);
+        auto paramSizer = new wxFlexGridSizer(1, 0, 5, 5);
         for (auto a : args)
-            paramSizer->Add(a, 0, wxALL|wxALIGN_CENTER_VERTICAL, 1);
-        mainSizer->Add(paramSizer, 0, wxALL, 1 );
+            paramSizer->Add(a, 0, wxALL | wxALIGN_CENTER_VERTICAL, 1);
+        mainSizer->Add(paramSizer, 0, wxALL, 1);
         return paramSizer;
     };
 
@@ -116,52 +116,51 @@ pnlAPI::pnlAPI() :
     setdBCh = new ChWxChoice(this);
     setdBGain = new wxSpinCtrl(this, wxNewId(), _(""), wxDefaultPosition, wxSize(56, -1), wxSP_ARROW_KEYS, 0, 100, 50);
     text = new wxStaticText(this, wxID_ANY, _("dB"));
-    functionEntry(btnSetdB,  _("LMS_SetGaindB"), {setdBDir, setdBCh, setdBGain, text});
+    functionEntry(btnSetdB, _("LMS_SetGaindB"), {setdBDir, setdBCh, setdBGain, text});
 
     setTestDir = dirChoice();
     setTestCh = new ChWxChoice(this);
-    setTestSig = new wxChoice(this, wxID_ANY, wxDefaultPosition, wxDefaultSize, 6 , test_signals);
+    setTestSig = new wxChoice(this, wxID_ANY, wxDefaultPosition, wxDefaultSize, 6, test_signals);
     setTestSig->SetSelection(0);
     setTestI = new wxSpinCtrl(this, wxNewId(), _(""), wxDefaultPosition, wxSize(72, -1), wxSP_ARROW_KEYS, 0, 65535, 10000);
     setTestQ = new wxSpinCtrl(this, wxNewId(), _(""), wxDefaultPosition, wxSize(72, -1), wxSP_ARROW_KEYS, 0, 65535, 10000);
     text = new wxStaticText(this, wxID_ANY, _("DC_I"));
     auto text2 = new wxStaticText(this, wxID_ANY, _("DC_Q"));
-    functionEntry(btnSetTest,  _("LMS_SetTestSignal"), {setTestDir, setTestCh, setTestSig, text, setTestI, text2, setTestQ});
+    functionEntry(btnSetTest, _("LMS_SetTestSignal"), {setTestDir, setTestCh, setTestSig, text, setTestI, text2, setTestQ});
 
     getRateDir = dirChoice();
     getRateCh = new ChWxChoice(this);
     getRateResult = new wxStaticText(this, wxID_ANY, _(""));
-    functionEntry(btnGetRate,  _("LMS_GetSampleRate"), {getRateDir, getRateCh, getRateResult});
+    functionEntry(btnGetRate, _("LMS_GetSampleRate"), {getRateDir, getRateCh, getRateResult});
 
     getFreqDir = dirChoice();
     getFreqCh = new ChWxChoice(this);
     getFreqResult = new wxStaticText(this, wxID_ANY, _(""));
-    functionEntry(btnGetFreq,  _("LMS_GetLOFrequency"), {getFreqDir, getFreqCh, getFreqResult});
+    functionEntry(btnGetFreq, _("LMS_GetLOFrequency"), {getFreqDir, getFreqCh, getFreqResult});
 
     getAntDir = dirChoice();
     getAntCh = new ChWxChoice(this);
     getAntResult = new wxStaticText(this, wxID_ANY, _(""));
-    functionEntry(btnGetAnt,  _("LMS_GetAntenna"), {getAntDir, getAntCh, getAntResult});
+    functionEntry(btnGetAnt, _("LMS_GetAntenna"), {getAntDir, getAntCh, getAntResult});
 
     getGainDir = dirChoice();
     getGainCh = new ChWxChoice(this);
     getGainResult = new wxStaticText(this, wxID_ANY, _(""));
-    functionEntry(btnGetGain,  _("LMS_GetNormalizedGain"), {getGainDir, getGainCh, getGainResult});
+    functionEntry(btnGetGain, _("LMS_GetNormalizedGain"), {getGainDir, getGainCh, getGainResult});
 
     getdBDir = dirChoice();
     getdBCh = new ChWxChoice(this);
     getdBResult = new wxStaticText(this, wxID_ANY, _(""));
-    functionEntry(btnGetdB,  _("LMS_GetGaindB"), {getdBDir, getdBCh, getdBResult});
+    functionEntry(btnGetdB, _("LMS_GetGaindB"), {getdBDir, getdBCh, getdBResult});
 
     getTestDir = dirChoice();
     getTestCh = new ChWxChoice(this);
     getTestResult = new wxStaticText(this, wxID_ANY, _(""));
-    functionEntry(btnGetTest,  _("LMS_GetTestSignal"), {getTestDir, getTestCh, getTestResult});
+    functionEntry(btnGetTest, _("LMS_GetTestSignal"), {getTestDir, getTestCh, getTestResult});
 
-    this->SetSizer( mainSizer );
+    this->SetSizer(mainSizer);
     this->Layout();
-    mainSizer->Fit( this );
-    
+    mainSizer->Fit(this);
 }
 
 pnlAPI::~pnlAPI()
@@ -169,7 +168,7 @@ pnlAPI::~pnlAPI()
     Close(true);
 }
 
-void pnlAPI::OnRun( wxCommandEvent& event )
+void pnlAPI::OnRun(wxCommandEvent &event)
 {
     auto obj = event.GetEventObject();
     if (obj == runButtons[btnInit])
@@ -197,8 +196,8 @@ void pnlAPI::OnRun( wxCommandEvent& event )
     {
         double freq = 0;
         setFreqFreq->GetValue().ToDouble(&freq);
-        printf("frequency: %f\r\n",freq);
-        printf("Direction: %d\r\n",setFreqDir->GetSelection());
+        printf("frequency: %f\r\n", freq);
+        printf("Direction: %d\r\n", setFreqDir->GetSelection());
         //LMS_SetLOFrequency(lmsControl, setFreqDir->GetSelection(), setFreqCh->GetSelection(), freq*1e6);
         //lmsAppFrame->UpdateVisiblePanel();
     }
@@ -234,13 +233,13 @@ void pnlAPI::OnRun( wxCommandEvent& event )
     {
         double host, rf;
         //LMS_GetSampleRate(lmsControl, getRateDir->GetSelection(), getRateCh->GetSelection(), &host, &rf);
-        getRateResult->SetLabel(wxString::Format(_("Sample Rate: %.6f MSps  (RF: %.3f MSps)"), host/1e6, rf/1e6));
+        getRateResult->SetLabel(wxString::Format(_("Sample Rate: %.6f MSps  (RF: %.3f MSps)"), host / 1e6, rf / 1e6));
     }
     else if (obj == runButtons[btnGetFreq])
     {
         double freq;
         //LMS_GetLOFrequency(lmsControl, getFreqDir->GetSelection(), getFreqCh->GetSelection(), &freq);
-        getFreqResult->SetLabel(wxString::Format(_("RF Frequency: %.6f MHz"), freq/1e6));
+        getFreqResult->SetLabel(wxString::Format(_("RF Frequency: %.6f MHz"), freq / 1e6));
     }
     else if (obj == runButtons[btnGetAnt])
     {
@@ -269,14 +268,13 @@ void pnlAPI::OnRun( wxCommandEvent& event )
     }
     else if (obj == runButtons[btnGetTest])
     {
-        lms_testsig_t sig = LMS_TESTSIG_NONE;
+        //lms_testsig_t sig = LMS_TESTSIG_NONE;
         //LMS_GetTestSignal(lmsControl, getTestDir->GetSelection(), getTestCh->GetSelection(), &sig);
-        getTestResult->SetLabel(wxString::Format(_("%s"), test_signals[sig].c_str()));
+        //getTestResult->SetLabel(wxString::Format(_("%s"), test_signals[sig].c_str()));
     }
-
 }
 
-void pnlAPI::OnAntDir( wxCommandEvent& event )
+void pnlAPI::OnAntDir(wxCommandEvent &event)
 {
     /*
     lms_name_t list[16];

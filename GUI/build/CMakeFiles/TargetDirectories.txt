@@ -1,3 +1,4 @@
-/home/tonix/Documents/CINVESTAV/Proyecto_Lime/LMS7002M-driver/GUI/build/CMakeFiles/rebuild_cache.dir
-/home/tonix/Documents/CINVESTAV/Proyecto_Lime/LMS7002M-driver/GUI/build/CMakeFiles/LimeGUI.dir
-/home/tonix/Documents/CINVESTAV/Proyecto_Lime/LMS7002M-driver/GUI/build/CMakeFiles/edit_cache.dir
+Z:/build/CMakeFiles/wx_cmake_template_core.dir
+Z:/build/CMakeFiles/ALL_BUILD.dir
+Z:/build/CMakeFiles/ZERO_CHECK.dir
+Z:/build/thirdparty/wxwidgets/CMakeFiles/wxWidgets_external.dir
