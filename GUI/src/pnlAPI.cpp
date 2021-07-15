@@ -5,8 +5,10 @@
 #endif //WX_PRECOMP
 #include <wx/spinctrl.h>
 #include <wx/panel.h>
+#include "bridge.h"
 
 using namespace std;
+IPDI_Bridge* bridge;
 
 enum Buttons
 {
@@ -33,6 +35,7 @@ static const wxString test_signals[] = {"None", "NCO CLK/8", "NCO CLK/4", "NCO C
 bool MyApp::OnInit()
 {
     pnlAPI *frame = new pnlAPI();
+    bridge = new IPDI_Bridge();
     frame->Show(true);
     return true;
 }
@@ -166,6 +169,7 @@ pnlAPI::pnlAPI() : wxFrame(NULL, wxID_ANY, "API Calls", wxDefaultPosition, wxDef
 pnlAPI::~pnlAPI()
 {
     Close(true);
+    delete bridge;
 }
 
 void pnlAPI::OnRun(wxCommandEvent &event)
