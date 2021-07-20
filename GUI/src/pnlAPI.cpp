@@ -5,17 +5,7 @@
 #endif //WX_PRECOMP
 #include <wx/spinctrl.h>
 #include <wx/panel.h>
-#include "windows.h"
-
-//Name given to the pipe
-#define g_szPipeName "\\\\.\\Pipe\\MyNamedPipe"
-//Pipe name format - \\servername\pipe\pipename
-//This pipe is for server on the same computer, 
-//however, pipes can be used to
-//connect to a remote server
-
-#define BUFFER_SIZE 1024 //1k
-#define ACK_MESG_RECV "Message received successfully"
+#include "client.h"
 
 using namespace std;
 
@@ -41,87 +31,11 @@ enum Buttons
 
 static const wxString test_signals[] = {"None", "NCO CLK/8", "NCO CLK/4", "NCO CLK/8 FS", "NCO CLK/8 FS", "DC"};
 
-VOID startup(LPCTSTR lpApplicationName)
-{
-   // additional information
-   STARTUPINFO si;     
-   PROCESS_INFORMATION pi;
-
-   // set the size of the structures
-   ZeroMemory( &si, sizeof(si) );
-   si.cb = sizeof(si);
-   ZeroMemory( &pi, sizeof(pi) );
-
-  // start the program up
-  CreateProcess( lpApplicationName,   // the path
-    NULL,        // Command line
-    NULL,           // Process handle not inheritable
-    NULL,           // Thread handle not inheritable
-    FALSE,          // Set handle inheritance to FALSE
-    0,              // No creation flags
-    NULL,           // Use parent's environment block
-    NULL,           // Use parent's starting directory 
-    &si,            // Pointer to STARTUPINFO structure
-    &pi             // Pointer to PROCESS_INFORMATION structure (removed extra parentheses)
-    );
-    // Close process and thread handles. 
-    CloseHandle( pi.hProcess );
-    CloseHandle( pi.hThread );
-}
-
-
-void sent_message_to_server(HANDLE hPipe)
-{
-    char szBuffer[]="server init\r\n";
-    DWORD cbBytes;
-    BOOL bResult = WriteFile( 
-          hPipe,                // handle to pipe 
-          szBuffer,             // buffer to write from 
-          strlen(szBuffer)+1,   // number of bytes to write, include the NULL
-          &cbBytes,             // number of bytes written 
-          NULL);                // not overlapped I/O 
-     
-     if ( (!bResult) || (strlen(szBuffer)+1 != cbBytes))
-     {
-          printf("\nError occurred while writing" 
-                 " to the server: %d", GetLastError()); 
-          CloseHandle(hPipe);
-     }
-     else
-     {
-          printf("\nWriteFile() was successful.");
-     }
-}
-
 bool MyApp::OnInit()
 {
     pnlAPI *frame = new pnlAPI();
-    //string rel_path = "Z:\\QTLibs\\build-Bridge-Desktop_Qt_5_15_1_MinGW_64_bit-Debug\\Bridge.exe";
-    //system(rel_path.c_str());
-    startup(L"Z:\\QTLibs\\build-Bridge-Desktop_Qt_5_15_1_MinGW_64_bit-Debug\\Bridge.exe");
-    Sleep(2000);
-    HANDLE hPipe;
-    //Connect to the server pipe using CreateFile()
-    hPipe = CreateFile( 
-          TEXT(g_szPipeName),   // pipe name 
-          GENERIC_READ |  // read and write access 
-          GENERIC_WRITE, 
-          0,              // no sharing 
-          NULL,           // default security attributes
-          OPEN_EXISTING,  // opens existing pipe 
-          0,              // default attributes 
-          NULL);          // no template file 
-    if (INVALID_HANDLE_VALUE == hPipe) 
-    {
-        printf("\nError occurred while connecting" 
-                " to the server: %d", GetLastError()); 
-    }
-    else
-    {
-        printf("\nCreateFile() was successful.");
-    }
-    sent_message_to_server(hPipe);
-
+    Client_socket pipe = Client_socket();
+    pipe.sent_message_to_server("hi");
     frame->Show(true);
     return true;
 }
@@ -255,9 +169,6 @@ pnlAPI::pnlAPI() : wxFrame(NULL, wxID_ANY, "API Calls", wxDefaultPosition, wxDef
 pnlAPI::~pnlAPI()
 {
     Close(true);
-    #if bridge_enable
-    delete bridge;
-    #endif
 }
 
 void pnlAPI::OnRun(wxCommandEvent &event)

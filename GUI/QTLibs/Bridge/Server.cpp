@@ -1,14 +1,9 @@
 #include "bridge.h"
 #include "windows.h"
+#include "Server.h"
 
-//Name given to the pipe
-#define g_szPipeName "\\\\.\\Pipe\\MyNamedPipe"
-//Pipe name format - \\.\pipe\pipename
 
-#define BUFFER_SIZE 1024 //1k
-#define ACK_MESG_RECV "Message received successfully"
-
-void read_client(HANDLE hPipe)
+void Server_socket::read_client()
 {
     char szBuffer[BUFFER_SIZE];
     DWORD cbBytes;
@@ -35,12 +30,8 @@ void read_client(HANDLE hPipe)
     strcpy(szBuffer, ACK_MESG_RECV);
 }
 
-
-
-int main(int argc, char const *argv[])
+Server_socket::Server_socket()
 {
-    
-    HANDLE hPipe;
     hPipe = CreateNamedPipe( 
         TEXT(g_szPipeName),       // pipe name 
         PIPE_ACCESS_DUPLEX,       // read/write access 
@@ -78,9 +69,8 @@ int main(int argc, char const *argv[])
     {
         printf("ConnectNamedPipe() was successful\r\n");
     }
-    read_client(hPipe);
-
+}
+Server_socket::~Server_socket()
+{
     CloseHandle(hPipe);
-    
-    return 0;
 }

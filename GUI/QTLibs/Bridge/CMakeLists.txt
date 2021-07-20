@@ -22,7 +22,7 @@ set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTORCC ON)
 set(CMAKE_AUTOUIC ON)
 
-add_executable(Bridge Server.cpp bridge.cpp COM_finder.cpp)
+add_executable(Bridge main.cpp Server.cpp bridge.cpp COM_finder.cpp)
 
 target_link_libraries(Bridge PRIVATE Qt5::Widgets -L${QTMW}/lib/ -lqtmw -L${LMW}/lib/ -lmw -lshlwapi)
 
