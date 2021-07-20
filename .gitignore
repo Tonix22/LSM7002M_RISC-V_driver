@@ -1,2 +1,4 @@
 Cli/build/*
 Cli/executables/*
+GUI/build/CMakeCache.txt
+GUI/QTLibs/build-Bridge-Desktop_Qt_5_15_1_MinGW_64_bit-Debug/*
