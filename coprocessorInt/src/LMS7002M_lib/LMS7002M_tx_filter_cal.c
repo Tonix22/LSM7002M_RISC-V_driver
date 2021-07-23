@@ -91,7 +91,7 @@ static int tx_cal_loop(
 /***********************************************************************
  * Prepare for TX filter self-calibration
  **********************************************************************/
-static int tx_cal_init(LMS7002M_t *self, const LMS7002M_chan_t channel)
+int tx_cal_init(LMS7002M_t *self, const LMS7002M_chan_t channel)
 {
     int status = 0;
     LMS7002M_set_mac_ch(self, channel);

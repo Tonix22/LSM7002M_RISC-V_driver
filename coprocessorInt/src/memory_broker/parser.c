@@ -1,5 +1,6 @@
 #include "LMS7002M.h"
 #include "parser.h"
+#include "LMS7002M_filter_cal.h"
 
 Geric_Parameter Params[MAX_PARAMETERS];
 
@@ -66,6 +67,8 @@ Caller One_Param_LMS7002M_chan[] =
     {&LMS7002M_set_mac_ch},
     {&LMS7002M_txtsp_tsg_tone},
     {&LMS7002M_rxtsp_tsg_tone},
+    {&rx_cal_init}, // set channel 
+    {&tx_cal_init}
 };
 
 typedef void callback_8(LMS7002M_t *, const LMS7002M_dir_t , const int );
