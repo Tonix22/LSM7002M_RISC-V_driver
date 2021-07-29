@@ -1,3 +1,0 @@
-Z:/build/CMakeFiles/wx_cmake_template_core.dir
-Z:/build/CMakeFiles/ALL_BUILD.dir
-Z:/build/CMakeFiles/ZERO_CHECK.dir
