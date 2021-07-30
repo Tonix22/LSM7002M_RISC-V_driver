@@ -29,6 +29,8 @@
 
 #define DEFAULT_FORMULA(n) ((uint64_t)(slider_cfg[n].by_default-slider_cfg[n].Min)*(uint64_t)slider_cfg[n].Steps)/(slider_cfg[n].Max-slider_cfg[n].Min);
 
+#define Generic_FORMULA(val,k) ((double)(val-slider_cfg[k].Min)*(double)slider_cfg[k].Steps)/(slider_cfg[k].Max-slider_cfg[k].Min);
+
 /**************************************************
  **************** STRING LIST *********************
  **************************************************/
@@ -160,6 +162,11 @@ public:
     void API_menu_trigger(const QString &text);
     void SliderStep();
     void Enable_Disable_CH_print();
+    void Text_param1_changed();
+    void Text_param2_changed();
+    void Text_input_register(std::string& msg,int index);
+    void Opcode_to_GUI();
+    
     QString units_label;
     std::vector<slide_utils> slider_cfg;
     std::vector<double> slider_rate={0,0};

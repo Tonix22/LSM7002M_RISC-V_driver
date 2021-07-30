@@ -1885,7 +1885,7 @@
     <property name="geometry">
      <rect>
       <x>30</x>
-      <y>310</y>
+      <y>340</y>
       <width>160</width>
       <height>24</height>
      </rect>
@@ -2364,7 +2364,7 @@
     <property name="geometry">
      <rect>
       <x>80</x>
-      <y>280</y>
+      <y>310</y>
       <width>68</width>
       <height>22</height>
      </rect>
@@ -2917,8 +2917,8 @@
    <widget class="QLabel" name="Param2_slider_val">
     <property name="geometry">
      <rect>
-      <x>60</x>
-      <y>340</y>
+      <x>50</x>
+      <y>370</y>
       <width>111</width>
       <height>22</height>
      </rect>
@@ -3447,7 +3447,7 @@
    <widget class="QPlainTextEdit" name="Param1_input_text">
     <property name="geometry">
      <rect>
-      <x>320</x>
+      <x>310</x>
       <y>240</y>
       <width>104</width>
       <height>31</height>
@@ -3460,8 +3460,8 @@
    <widget class="QPlainTextEdit" name="Param2_input_text">
     <property name="geometry">
      <rect>
-      <x>320</x>
-      <y>300</y>
+      <x>310</x>
+      <y>340</y>
       <width>104</width>
       <height>31</height>
      </rect>
@@ -3473,8 +3473,8 @@
    <widget class="QLabel" name="Insert_Opcode_label">
     <property name="geometry">
      <rect>
-      <x>510</x>
-      <y>210</y>
+      <x>440</x>
+      <y>200</y>
       <width>151</width>
       <height>22</height>
      </rect>
@@ -3494,7 +3494,7 @@
    <widget class="QPlainTextEdit" name="Opcode_input_text">
     <property name="geometry">
      <rect>
-      <x>510</x>
+      <x>460</x>
       <y>240</y>
       <width>104</width>
       <height>31</height>
@@ -3528,9 +3528,9 @@
    <widget class="QLabel" name="Show_get_result">
     <property name="geometry">
      <rect>
-      <x>520</x>
-      <y>290</y>
-      <width>241</width>
+      <x>430</x>
+      <y>330</y>
+      <width>161</width>
       <height>51</height>
      </rect>
     </property>
@@ -4064,7 +4064,7 @@
     <property name="geometry">
      <rect>
       <x>200</x>
-      <y>310</y>
+      <y>340</y>
       <width>111</width>
       <height>22</height>
      </rect>

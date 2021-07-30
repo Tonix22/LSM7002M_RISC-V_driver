@@ -31,7 +31,7 @@ std::vector<slide_utils> slider_ranges[sizeofsetersEnum]
     {{100,0  ,1000, 10},{6,0,6,0}},//SetSamplerate
     {{6000,50,2147483647,500}},     //SetFilterbwfreq
     {{100,0  ,1000, 10},{6,0,6,0}},//SetSampleratedir
-    {{6000,50,2147483647,500}}, //SetLofrequency
+    {{6000,50,2147483647,500},{6000,50,2147483647,500}}, //SetLofrequency
     {{1,0,100,1}},//SetNormalizedgain
     {{100,0,100,50}},//SetGaindb
     {{1000000,0,2147483647,10000},{1000000,0,2147483647,10000}}//SetTestsignal
@@ -43,10 +43,11 @@ MainWindow::MainWindow(QWidget *parent)
     , ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
-    connect( ui->SendData, &QPushButton::clicked, this, &MainWindow::onButtonClicked);
-    connect(ui->set_get_menu, &QComboBox::currentTextChanged,this,&MainWindow::set_get_menu_changed);
-    connect(ui->API_menu, &QComboBox::currentTextChanged,this,&MainWindow::API_menu_trigger);
-
+    connect(ui->SendData,         &QPushButton::clicked,         this,&MainWindow::onButtonClicked);
+    connect(ui->set_get_menu,     &QComboBox::currentTextChanged,this,&MainWindow::set_get_menu_changed);
+    connect(ui->API_menu,         &QComboBox::currentTextChanged,this,&MainWindow::API_menu_trigger);
+    connect(ui->Param1_input_text,&QPlainTextEdit::textChanged,  this,&MainWindow::Text_param1_changed);
+    connect(ui->Param2_input_text,&QPlainTextEdit::textChanged,  this,&MainWindow::Text_param2_changed);
     //NONE MENU
     ui->API_menu->clear();
     ui->API_menu->insertItems(0, QStringList() NONE_API_LIST);
@@ -58,11 +59,9 @@ void MainWindow::onButtonClicked()
 {
     int set_get_state   = ui->set_get_menu->currentIndex();
     int tx_rx_stare     = ui->tx_rx_menu->currentIndex();
-    int API_ID = ui->API_menu->currentIndex();
-    int Ch = ui->chanel_menu->currentIndex();
+    int API_ID          = ui->API_menu->currentIndex();
+    int Ch              = ui->chanel_menu->currentIndex();
 
-
-    std::cout<<"YUP"<<std::endl;
 }
 void MainWindow :: set_get_menu_changed(const QString &text)
 {
@@ -99,6 +98,10 @@ void MainWindow ::API_menu_trigger(const QString &text)
         //Slider config
         ui->Param_1_val->disconnect();
         ui->Param_2_val->disconnect();
+        ui->Param_1_val->setValue(0);
+        ui->Param_1_val->setSliderPosition(0);
+        ui->Param_2_val->setValue(0);
+        ui->Param_2_val->setSliderPosition(0);
         QObject::connect(ui->Param_1_val, &QSlider::valueChanged, this, SliderStep);
         QObject::connect(ui->Param_2_val, &QSlider::valueChanged, this, SliderStep);
 
@@ -177,6 +180,19 @@ void MainWindow :: SliderStep()
     {
         ui->Param2_slider_val->setText((std::to_string(val2)).c_str());
     }
+}
+void MainWindow :: Text_param1_changed()
+{
+    static std::string param1_str;
+    //std::cout<<"param1"<<endl;
+    Text_input_register(param1_str,0);
+    
+}
+void MainWindow :: Text_param2_changed()
+{
+    static std::string param2_str;
+    //std::cout<<"param2"<<endl;
+    Text_input_register(param2_str,1);
 }
 
 MainWindow::~MainWindow()
