@@ -130,7 +130,7 @@ src/helper/src_helper_libhelper_la-options.lo: src/helper/options.c \
  src/helper/log.h src/helper/command.h /usr/include/getopt.h \
  /usr/include/x86_64-linux-gnu/bits/getopt_ext.h \
  /usr/include/x86_64-linux-gnu/sys/sysctl.h /usr/include/linux/sysctl.h \
- /usr/include/linux/kernel.h /usr/include/linux/types.h \
+ /usr/include/linux/const.h /usr/include/linux/types.h \
  /usr/include/x86_64-linux-gnu/bits/sysctl.h
 
 /usr/include/stdc-predef.h:
@@ -453,7 +453,7 @@ src/helper/command.h:
 
 /usr/include/linux/sysctl.h:
 
-/usr/include/linux/kernel.h:
+/usr/include/linux/const.h:
 
 /usr/include/linux/types.h:
 
