@@ -7,9 +7,9 @@ RAM:3.6% (used 9292 bytes from 256000 bytes)
 
 Flash: 33.0% (used 84548 bytes from 256000 bytes)
 
-### Install Platformio driver
+### Install Development Requirments
 
-[Install RISC-V for platformio](/Installers/Install.md)
+[Install Quartus, RISC-V,and platformio](/Installers/Install.md)
 
 ### Compile the project
 Project setup is in platformio Vscode Extension. To compile open platformio and select coprocesorInt folder, then select dupin_barmetal-> build all
