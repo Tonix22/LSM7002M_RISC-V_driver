@@ -26,6 +26,17 @@ Delete -werror flag in the compiler for an easier solution
 Please follow this steps carefully:
 
 * *Step 1:* Install [platformio](https://platformio.org/install) with the [VScode](https://platformio.org/install/ide?install=vscode) plugin.
+
+<img src="https://www.wowza.com/uploads/blog/icon-advanced-controls.png" alt="drawing" width="40"/>
+Troubleshooting
+
+*Known Issue if platformio instalation fail*
+https://github.com/platformio/platformio-core-installer/issues/85
+
 * *Step 2:* Unzip and put  `./platform-dupinrv32.zip` in `~/.platformio/platforms/platform-dupinrv32`
 
+```console
+foo@bar: unzip platform-dupinrv32.zip
+foo@bar: mv platform-dupinrv32 /home/tonix/.platformio/platforms/
+```
 Once this is done platformio should be able to find the riscV compiler

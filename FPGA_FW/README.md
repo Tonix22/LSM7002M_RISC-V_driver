@@ -2,6 +2,7 @@
 ## DEPENDENCIES 
 * [Quartus Prime Programmer Version 20.1.1](https://fpgasoftware.intel.com/?edition=lite)(linux)
     * Download bistream
+    * Rember to set quartus_pgm into local path 
 * RISCV GCC
     * Compiler of softcore
 * openocd 0.10.0+dev-g1e85cf0-dirty
@@ -15,16 +16,38 @@ wget https://static.dev.sifive.com/dev-tools/riscv64-unknown-elf-gcc-20171231-x8
 tar -xzvf riscv64-unknown-elf-gcc-20171231-x86_64-linux-centos6.tar.gz
 sudo mv riscv64-unknown-elf-gcc-20171231-x86_64-linux-centos6 /opt/riscv64-unknown-elf-gcc-20171231-x86_64-linux-centos6
 sudo mv /opt/riscv64-unknown-elf-gcc-20171231-x86_64-linux-centos6 /opt/riscv
-echo 'export PATH=/opt/riscv/bin:$PATH' >> ~/.bashrc
+echo 'export PATH="/opt/riscv/bin:$PATH"' >> ~/.bashrc
 ```
-## hands on download
-We will use a bash script **framwork.sh** to make easier manage with developing.
+## Download Bitstream
+We will use a bash script **framwork.sh** to simplify using some commands.
+Inside this file check that **SOFT_DIR** is correct. 
 
+```sh
+#! /bin/bash
+BASEDIR=${PWD}
+#Bitstream PATH
+#SOFT_DIR=/dupinSoC/hdl/dupin-cenzontle2.sof
+SOFT_DIR=/dupinSoC/hdl/dupinCoprocessor-CNZTL2.sof
+```
 
-1. Download the bistream. Check that **SOFT_DIR** is correct. 
+1. Download the bistream. Check that 
 ```console
 foo@bar:~$ ./framework.sh -bitstream
 ```
+## Known Issues, USB blaster, Linux
+
+**Error code 89**
+Permisions problems on JTAG port
+
+Link 1
+
+https://rocketboards.org/foswiki/Documentation/UsingUSBBlasterUnderLinux
+
+Link 2
+
+https://mil.ufl.edu/3701/docs/quartus/linux/Programmer_linux.pdf
+
+
 2. Open OCD, connect to the FPGA and core to debug.  Check that **USB_CFG** and **DUPIN_CFG** are correct.
 ```console
 foo@bar:~$ ./framework.sh -ocd
@@ -62,9 +85,8 @@ Debug may start in a .S file and the will go to the main.c file
 ![Alt text](Result.jpeg?raw=true "Result")
 
 
-## Known Issues, USB blaster, Linux 
-Permisions problems on JTAG port
-https://rocketboards.org/foswiki/Documentation/UsingUSBBlasterUnderLinux
+**Error code 87**
+Flip JTAG connection
 
 ## SPI pins
 
