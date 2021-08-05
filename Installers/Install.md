@@ -1,5 +1,5 @@
 # Install Quartus Prime Programmer Version 20.1.1
-* *Step 1:* Go to this link [Quartus Prime Programmer Version 20.1.1](https://fpgasoftware.intel.com/?edition=lite)(linux) and download lite edition
+* *Step 1:* Go to this link [Quartus Prime Programmer Version 20.1.1](https://fpgasoftware.intel.com/?edition=lite)(linux) and download lite edition, the instalation is easy, unzip folder and run the instalation .sh file. 
 * *Step 2:* Add quartus_pgm to your path which it will be in a folder like this one. 
 ```bash
 sudo nano /home/tonix/.bashrc
