@@ -3,7 +3,32 @@
 #include <QFile>
 #include <QStringList>
 #include <QDebug>
+#include <QPushButton>
+#include <utility>
 
+std::vector<std::pair<bool,bool>> enable_ch_dir[Qt_labels_size]=
+{
+    {{{false,false},{false,false}}},
+    {{{false,false},{false,false},{false,false}}},
+    {{{false,false},{false,false}}},
+    {{{false,false},{false,true}}},
+    {{{false,false},{false,false},{false,false},{false,false},{false,false}}},
+    {{{false,false},{false,false}}},
+    {{{false,false},{false,false}}},
+    {{{false,false},{false,false},{false,true}}},
+    {{{false,true},{true,false}}},
+    {{{true,false},{true,false},{true,false}}},
+    {{{false,true},{true,false},{true,false},{true,false}}},
+    {{{false,false},{true,true},{false,true},{true,false},{true,false},{true,false},{true,false},{true,false},{true,false},{true,false}}},
+    {{{false,false},{true,false},{true,false}}},
+    {{{true,true},{false,true},{true,false},{true,false}}},
+    {{{false,false}}},
+    {{{true,false},{true,false}}},
+    {{{true,false},{true,false},{true,false},{true,false},{true,false},{true,false}}},
+    {{{true,false},{true,false},{true,false}}},
+    {{{true,false},{true,false},{true,false},{true,false},{true,false},{true,false}}},
+    {{{true,false}}},
+};
 
 std::vector<int> opcode[Qt_labels_size]={
     {{0x0,0x21}},
@@ -80,11 +105,6 @@ MainWindow::MainWindow(QWidget *parent)
     ui->API_menu->insertItems(0, QStringList() NONE_API_LIST);
     ui->set_get_menu->clear();
     ui->set_get_menu->insertItems(0, QStringList() QT_LABELS_COLLECTION);
-
-    bridge = new IPDI_Bridge();
-    
-    this->show();
-
 }
 
 void MainWindow::onButtonClicked()
@@ -180,74 +200,11 @@ void MainWindow :: set_get_menu_changed(const QString &text)
 void MainWindow ::API_menu_trigger(const QString &text)
 {  
     int set_get_state   = ui->set_get_menu->currentIndex();
-    API_ID              = (seters_list_enum)(ui->API_menu->currentIndex());
-    
-    if(set_get_state == SetFill && API_ID < sizeofsetersEnum && API_ID >=0)
+    API_ID              = ui->API_menu->currentIndex();
+    if(set_get_state < Qt_labels_size && set_get_state >=0)
     {
-
-        //labels
-        units_label = params_list_str[measure_str[API_ID].first];
-        ui->units_label_1->setText(units_label);
-        units_label = params_list_str[measure_str[API_ID].second];
-        ui->units_label_2->setText(units_label);
-        
-        //Slider config
-        ui->Param_1_val->disconnect();
-        ui->Param_2_val->disconnect();
-        ui->Param_1_val->setValue(0);
-        ui->Param_1_val->setSliderPosition(0);
-        ui->Param_2_val->setValue(0);
-        ui->Param_2_val->setSliderPosition(0);
-        QObject::connect(ui->Param_1_val, &QSlider::valueChanged, this, SliderStep);
-        QObject::connect(ui->Param_2_val, &QSlider::valueChanged, this, SliderStep);
-
-        slider_cfg = slider_ranges[API_ID];
-            
-        ui->Param_1_val->setRange(0,slider_cfg[0].Steps);
-        slider_rate[0] = ((double)(slider_cfg[0].Max - slider_cfg[0].Min))/slider_cfg[0].Steps;
-            
-        {
-            int slidePosition =DEFAULT_FORMULA(0);
-            ui->Param_1_val->setValue(slidePosition);
-            ui->Param_1_val->setSliderPosition(slidePosition);
-            
-            if(slider_cfg.size() >1 )
-            {
-                ui->Param_2_val->setRange(0,slider_cfg[1].Steps);
-                slider_rate[1] = ((double)(slider_cfg[1].Max - slider_cfg[1].Min))/slider_cfg[1].Steps;
-                slidePosition =DEFAULT_FORMULA(1);
-                ui->Param_2_val->setValue(slidePosition);
-                ui->Param_2_val->setSliderPosition(slidePosition);
-            }else{
-                ui->Param2_slider_val->setText("");
-                ui->Param_2_val->disconnect();
-                }
-        }
-
-    }
-    else if(set_get_state == NoneFill)
-    {
-        ui->Param1_slider_val->setText("");
-        ui->Param2_slider_val->setText("");
-        if(API_ID == 0) // enable channel 
-        {
-            ui->Param_1_val->setRange(0,1);
-            QObject::connect(ui->Param_1_val, &QSlider::valueChanged, this, Enable_Disable_CH_print);
-            ui->Param_1_val->setValue(0);
-            ui->Param_1_val->setSliderPosition(0);
-        }
-        else{goto others;}
-    }
-    else
-    {
-        ui->Param1_slider_val->setText("");
-        ui->Param2_slider_val->setText("");
-        others:
-        ui->Param_2_val->disconnect();
-        ui->Param_1_val->disconnect();
-        QString units_label = params_list_str[EMPTY];
-        ui->units_label_1->setText(units_label);
-        ui->units_label_2->setText(units_label);
+        ui->chanel_menu->setEnabled(enable_ch_dir[set_get_state][API_ID].first);
+        ui->tx_rx_menu->setEnabled(enable_ch_dir[set_get_state][API_ID].second);
     }
 }
 void MainWindow :: Enable_Disable_CH_print()

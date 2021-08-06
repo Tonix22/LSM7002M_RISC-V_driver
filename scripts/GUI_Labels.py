@@ -1,4 +1,5 @@
 import pandas as pd
+import numpy as np
 
 class GUI_Helper_generator():
     def __init__(self):
@@ -53,6 +54,7 @@ class GUI_Helper_generator():
             print("\t"+n+"_size")
             print("}"+n+"_num_t;")
             print()
+
     def Generate_vector(self):
         print("std::vector<int> opcode[Qt_labels_size]={")
         for n in self.QT_labels:
@@ -78,8 +80,51 @@ class GUI_Helper_generator():
                             print("0x"+opcode[m]+",",end='')
             print()
         print("};")
+
+    def Generate_cha_dir_vector(self):
+        print("std::vector<std::pair<bool,bool>> enable_ch_dir[Qt_labels_size]={")
+        """
+        P_labels = self.df['P1_t'].unique()
+        P_labels = ("\n".join(P_labels)).replace(" ","").split('\n')
+        """
+        P_Filter = ["constLMS7002M_chan_t","constLMS7002M_dir_t"]
+        for n in self.QT_labels:
+            rslt_df = self.df[self.df['QT Label'] == n]
+            
+            p1 = rslt_df['P1_t'].to_string(index=False)
+            p2 = rslt_df['P2_t'].to_string(index=False)
+            p1 = p1.replace(" ","")
+            p2 = p2.replace(" ","")
+            p1 = p1.split('\n')
+            p2 = p2.split('\n')
+            chan = np.array([ x == P_Filter[0] for x in p1]) | np.array([ x == P_Filter[0] for x in p2])
+            dir  = np.array([ x == P_Filter[1] for x in p1]) | np.array([ x == P_Filter[1] for x in p2])
+            #print (n+": ",end='')
+            first = True
+            print("\t",end='')
+            print("{",end='')
+            if(len(chan) == 1):
+                print("{",end='')
+            for m in range(0,len(chan)):
+                if(m == (len(chan)-1)):
+                    print("{"+str(chan[m]).lower()+","+str(dir[m]).lower()+"}",end='')
+                    print("}",end='')
+                else:
+                    if(first):
+                        first = False
+                        print("{",end='')
+                        print("{"+str(chan[m]).lower()+","+str(dir[m]).lower()+"},",end='')
+                    else:
+                        print("{"+str(chan[m]).lower()+","+str(dir[m]).lower()+"},",end='')
+            #
+            #print (chan)
+            print("},")
+        print("};")
+
+
+
 helper = GUI_Helper_generator()
-helper.Generate_vector()
+helper.Generate_cha_dir_vector()
 #helper.generate_QT_labels_enum()
 #helper.generate_QT_labels_string()
 #helper.generate_submenus()

@@ -460,7 +460,7 @@ public:
     QString units_label;
     std::vector<slide_utils> slider_cfg;
     std::vector<double> slider_rate={0,0};
-    seters_list_enum API_ID = sizeofsetersEnum;
+    int API_ID = sizeofsetersEnum;
     ~MainWindow();
 
 private:
