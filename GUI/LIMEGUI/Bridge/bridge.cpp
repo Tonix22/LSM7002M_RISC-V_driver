@@ -92,10 +92,6 @@ IPDI_Bridge :: IPDI_Bridge()
             file.flush();
             file.close();
             goto csvfile_try;
-            //win->FilePathCheck();
-            //this->mw->finish();
-            //delete mw;
-            //delete aip;
         }
     }
     else
@@ -110,6 +106,17 @@ IPDI_Bridge :: IPDI_Bridge()
     //Example();
 }
 
+void IPDI_Bridge::clear_buff(Clear_type clr)
+{
+    if(clr == DATA_IN)
+    {
+        memset(&(data_in.op),0,sizeof(uint32_t)*10);
+    }
+    else
+    {
+        memset(&(data_out.op),0,sizeof(uint32_t)*10);
+    }
+}
 
 void IPDI_Bridge :: WriteData()
 {
@@ -133,19 +140,19 @@ void IPDI_Bridge :: Wait_ACK()
 
 void IPDI_Bridge :: ReadData()
 {
-    uint32_t p[10]={0};
+    uint32_t data_read[10]={0};
     uint8_t tries = 0;
     do
     {
         Sleep(1);
-        memset(p,0,sizeof(uint32_t)*10);
-        aip->readMem("MDATAOUT", p, 10, 0, addr);
+        memset(data_read,0,sizeof(uint32_t)*10);
+        aip->readMem("MDATAOUT", data_read, 10, 0, addr);
 
-    }while(p[0]==0 && p[1]==0 && p[2]==0);
+    }while(data_read[0]==0 && data_read[1]==0 && data_read[2]==0);
 
 
-    data_out.p1 = p[0];
-    data_out.p2 = p[1];
+    data_out.p[0] = data_read[0];
+    data_out.p[1] = data_read[1];
 
     aip->start(addr);
 

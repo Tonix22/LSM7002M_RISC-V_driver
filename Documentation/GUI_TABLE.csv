@@ -1,0 +1,17 @@
+None/Set/Get,API,API IDX,TX/RX,OPCODE,Name in RISCV,Call in CLI
+0,Enable Channel,0,0,A7,rx_cal_init,
+0,Enable Channel,0,1,C7,tx_cal_init,
+0,LMS_Init,1,,0,LMS7002M_create,
+1,SetSamplerate,0,,,LMS7002M_set_data_clock,"LMS_SetSampleRate(device, 8e6, 2)"
+1,SetFilterbwfreq,1,,,,
+1,SetSampleratedir,2,,,,
+1,SetLofrequency,3,0/1,E,LMS7002M_set_lo_freq,
+1,SetNormalizedgain,4,,,LMS7002M_trf_set_pad,
+1,SetGaindb,5,,,LMS7002M_trf_set_pad,
+1,SetTestsignal,6,,,,
+2,samplerate,0,,,,
+2,lofrequency,1,,,,
+2,antenna,2,,,,
+2,normalizedgain,3,,,,
+2,gaindb,4,,,,
+2,testsignal,5,,,,

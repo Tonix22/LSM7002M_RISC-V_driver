@@ -3,13 +3,17 @@
 #include "qtmw.h"
 #include "qaip.h"
 
+typedef enum
+{
+    DATA_IN,
+    DATA_OUT
+
+}Clear_type;
+
 typedef struct
 {
     uint32_t op;
-    uint32_t p1;
-    uint32_t p2;
-    void* large_data;
-    short ld_size;
+    uint32_t p[9];
 }Param_chunk;
 
 class IPDI_Bridge
@@ -23,8 +27,10 @@ class IPDI_Bridge
     IPDI_Bridge();
     void ReadData();
     void WriteData();
+    void clear_buff(Clear_type clr);
     void Wait_ACK();
     void Example();
+    
     ~IPDI_Bridge();
 };
 
