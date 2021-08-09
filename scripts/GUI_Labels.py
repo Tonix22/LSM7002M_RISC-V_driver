@@ -8,35 +8,60 @@ class GUI_Helper_generator():
         self.QT_labels = self.df['QT Label'].unique()
 
     def generate_QT_labels_enum(self):
+        final_str = "typedef enum\r\n{\r\n"
         for n in self.QT_labels:
-            print(n+"_num,")
+            n = n.replace(" ","_")
+            final_str+="\t"+n+"_num,\r\n"
+        final_str+="\tQt_labels_size\r\n}Qt_label_t;\r\n"
+        return final_str
 
     def generate_QT_labels_string(self):
+        final_str ="#define QT_LABELS_COLLECTION   "
+        padding   = len(final_str)
+        first     = True
         for n in self.QT_labels:
-            print("\""+n+"\""+","+"\\")
+            if(first):
+                first = False
+                final_str+="PUSH_TO_LIST(\""+n+"\""+")"+"\\\r\n"
+            else:
+                final_str+=padding*" "+"PUSH_TO_LIST(\""+n+"\""+")"+"\\\r\n"
+        return final_str
+
+    def gen_function_type_header(self):
+        header = "#include \"common.h\"\r\n\r\n"
+        header += self.generate_QT_labels_enum() + "\r\n"
+        header += self.generate_QT_labels_string()
+        header += "#endif"
+        print(header, file=open('function_type.h', 'a'))
 
     def generate_submenus(self):
+        final_str = ""
         for n in self.QT_labels:
-            print("#define "+n.upper()+"_SUBMENU_COLLECTION() ", end='')
+            define_str = "#define "+n.replace(" ","_").upper()+"_SUBMENU_COLLECTION "
+            size_define = len(define_str)
+            final_str+=define_str
+
             rslt_df = self.df[self.df['QT Label'] == n]
             Api_names = rslt_df['API Name'].to_string(index=False).replace("LMS7002M_","")
             Api_names = Api_names.replace(" ","")
             Api_names = Api_names.split('\n')
             first = True
+
             for m in range(0,len(Api_names)):
-                if(m == (len(Api_names)-1)):
-                    print("\t\tPUSH_TO_LIST(\""+Api_names[m]+"\")")
+                if(first):
+                    first = False
+                    final_str+="PUSH_TO_LIST(\""+Api_names[m]+"\")"+"\\\r\n"
                 else:
-                    if(first):
-                        first = False
-                        print("PUSH_TO_LIST(\""+Api_names[m]+"\")"+"\\")
-                    else:
-                        print("\t\tPUSH_TO_LIST(\""+Api_names[m]+"\")"+"\\")
-            print()
+                    final_str+=size_define*" "+"PUSH_TO_LIST(\""+Api_names[m]+"\")"+"\\\r\n"
+            
+            final_str = final_str[:-3]
+            final_str+="\r\n\r\n"
+
+        print(final_str, file=open('submenus.h', 'a'))
 
     def gerenate_submenus_enums(self):
         for n in self.QT_labels:
-            print("typedef enum{")
+            print("typedef enum{", file=open('submenus.h', 'a'))
             rslt_df = self.df[self.df['QT Label'] == n]
             Api_names = rslt_df['API Name'].to_string(index=False).replace("LMS7002M_","")
             Api_names = Api_names.replace(" ","")
@@ -44,16 +69,21 @@ class GUI_Helper_generator():
             first = True
             for m in range(0,len(Api_names)):
                 if(m == (len(Api_names)-1)):
-                    print("\t"+Api_names[m][0].upper()+Api_names[m][1:]+"_num,")
+                    print("\t"+Api_names[m][0].upper()+Api_names[m][1:]+"_submenu_num,", file=open('submenus.h', 'a'))
                 else:
                     if(first):
                         first = False
-                        print("\t"+Api_names[m][0].upper()+Api_names[m][1:]+"_num,")
+                        print("\t"+Api_names[m][0].upper()+Api_names[m][1:]+"_submenu_num,", file=open('submenus.h', 'a'))
                     else:
-                        print("\t"+Api_names[m][0].upper()+Api_names[m][1:]+"_num,")
-            print("\t"+n+"_size")
-            print("}"+n+"_num_t;")
-            print()
+                        print("\t"+Api_names[m][0].upper()+Api_names[m][1:]+"_submenu_num,", file=open('submenus.h', 'a'))
+            print("\t"+n.replace(" ","_")+"_submenu_size", file=open('submenus.h', 'a'))
+            print("}"+n.replace(" ","_")+"_num_t;", file=open('submenus.h', 'a'))
+            print("", file=open('submenus.h', 'a'))
+
+    def write_submenus_file(self):
+        print("#include \"common.h\"\r\n", file=open('submenus.h', 'a'))
+        self.gerenate_submenus_enums()
+        self.generate_submenus()
 
     def Generate_vector(self):
         print("std::vector<int> opcode[Qt_labels_size]={")
@@ -153,10 +183,9 @@ class GUI_Helper_generator():
         print("#endif", file=open('description.h', 'a'))
 
 helper = GUI_Helper_generator()
-helper.Generate_descriptions()
-#helper.generate_QT_labels_enum()
-#helper.generate_QT_labels_string()
-#helper.generate_submenus()
+#helper.gen_function_type_header()
+helper.write_submenus_file()
+#helper.Generate_descriptions()
 """
 for n in QT_labels:
     rslt_df = df[df['QT Label'] == n]

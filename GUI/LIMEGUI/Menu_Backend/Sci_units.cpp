@@ -1,12 +1,12 @@
 #include "mainwindow.h"
-
-std::string MainWindow :: int_to_Sci(uint64_t temp)
+/*
+std::string MainWindow :: int_to_Sci(double temp)
 {
     char power = 0;
     int integers = 0;
     std::string merge;
     char scientific = 0;
-    uint64_t original_value = temp;
+    double original_value = temp;
     if(temp < 1000)
         return std::to_string(temp);
     while(temp!=0)
@@ -30,14 +30,14 @@ std::string MainWindow :: int_to_Sci(uint64_t temp)
 
     return merge;
 }
-
-uint64_t MainWindow::Sci_to_int(std::string& msg)
+*/
+double MainWindow::Sci_to_int(std::string& msg)
 {
     int offset = 0;
     std::size_t found;
-    uint64_t num = 0;
+    double num = 0;
     bool notation = false;
-    uint64_t multipliyer = 0;
+    double multipliyer = 0;
     std::string left = "0";
     std::string right= "0";
 
@@ -48,7 +48,7 @@ uint64_t MainWindow::Sci_to_int(std::string& msg)
             found = msg.find(Sci_units[i]);
             if (found != std::string::npos)
             {
-                multipliyer = (uint64_t)pow(10,(i+1)*3);
+                multipliyer = (double)pow(10,(i+1)*3);
                 break;
             }
         }

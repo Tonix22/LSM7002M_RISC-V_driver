@@ -1,5 +1,6 @@
 #include "mainwindow.h"
 #include "../ui_mainwindow.h"
+#include <iostream>
 
 void MainWindow :: Text_input_register(std::string& msg,int index)
 {
@@ -11,8 +12,8 @@ void MainWindow :: Text_input_register(std::string& msg,int index)
     {
         double value_proc;
         temp.pop_back();
-        value_proc = atof(temp.c_str());
-        value_proc = Generic_FORMULA(value_proc,index)
+        value_proc = Sci_to_int(temp);
+        std::cout<<value_proc<<std::endl;
         slider->setValue((int)value_proc);
         slider->setSliderPosition((int)value_proc);
         input_text->clear();

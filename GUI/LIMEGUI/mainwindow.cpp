@@ -61,37 +61,6 @@ std::vector<int> opcode[Qt_labels_size]={
  *********************SETER STRING VARIABLES*******************
  *************************************************************/
 
-char string_list[set_cmd_size][MAX_SET_STRING_SIZE] = 
-{
-    SET_STRING_COLLECTION()
-};
-char params_list_str[Size_of_parms_idx][MAX_PARAMS_STR_SIZE]=
-{
-    PARAMS_STRING_COLLECTION()
-};
-
-std::unordered_map<seters_list_enum, std::pair<params_str_idx, params_str_idx>> measure_str = 
-{
-    {SetSamplerate    ,{Msps, Oversampling}},
-    {SetFilterbwfreq  ,{Mhz,  None}},
-    {SetSampleratedir ,{Msps, Oversampling}},
-    {SetLofrequency   ,{Ref,  Fout}},
-    {SetNormalizedgain,{EMPTY,None}},
-    {SetGaindb        ,{dB,   None}},
-    {SetTestsignal    ,{DC_I, DC_Q}}
-};
-std::vector<slide_utils> slider_ranges[sizeofsetersEnum]
-{
-    //max,min,steps,default
-    {{100,0  ,1000, 10},{6,0,6,0}},//SetSamplerate
-    {{6000,50,2147483647,500}},     //SetFilterbwfreq
-    {{100,0  ,1000, 10},{6,0,6,0}},//SetSampleratedir
-    {{6000,50,2147483647,500},{6000,50,2147483647,500}}, //SetLofrequency
-    {{1,0,100,1}},//SetNormalizedgain
-    {{100,0,100,50}},//SetGaindb
-    {{1000000,0,2147483647,10000},{1000000,0,2147483647,10000}}//SetTestsignal
-};
-
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -105,10 +74,13 @@ MainWindow::MainWindow(QWidget *parent)
     connect(ui->Param2_input_text,&QPlainTextEdit::textChanged,  this,&MainWindow::Text_param2_changed);
     //NONE MENU
     ui->API_menu->clear();
-    ui->API_menu->insertItems(0, QStringList() NONE_API_LIST);
+    ui->API_menu->insertItems(0, QStringList() INTERNAL_SUBMENU_COLLECTION);
     ui->set_get_menu->clear();
     ui->set_get_menu->insertItems(0, QStringList() QT_LABELS_COLLECTION);
-
+    
+    ui->Param_1_val->setRange(0,INT_MAX);
+    ui->Param_2_val->setRange(0,INT_MAX);
+    //std::cout<<"max int is: "<< INT_MAX <<std::endl;
     //bridge = new IPDI_Bridge();
 }
 
@@ -116,7 +88,7 @@ void MainWindow::onButtonClicked()
 {
     int set_get_state   = ui->set_get_menu->currentIndex();
     int tx_rx_stare     = ui->tx_rx_menu->currentIndex();
-    int API_ID          = ui->API_menu->currentIndex();
+    API_ID          = ui->API_menu->currentIndex();
     int Ch              = ui->chanel_menu->currentIndex();
 
     std::cout<<"opcode: "<<std::hex<<opcode[set_get_state][API_ID]<<std::endl;
@@ -221,6 +193,7 @@ void MainWindow :: Enable_Disable_CH_print()
 }
 void MainWindow :: SliderStep()
 {
+    /*
     double val1  = (ui->Param_1_val->value()*slider_rate[0])+slider_cfg[0].Min;
     double val2  = (ui->Param_2_val->value()*slider_rate[1])+slider_cfg[1].Min;
     ui->Param1_slider_val->setText((std::to_string(val1)).c_str());
@@ -241,6 +214,7 @@ void MainWindow :: SliderStep()
     {
         ui->Param2_slider_val->setText((std::to_string(val2)).c_str());
     }
+    */
 }
 void MainWindow :: Text_param1_changed()
 {

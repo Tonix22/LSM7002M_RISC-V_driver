@@ -7,8 +7,10 @@ endif()
 
 find_package(Qt5 COMPONENTS Widgets REQUIRED)
 
-add_library(Backend Input_text.cpp description.cpp)
+add_library(Backend Input_text.cpp Sci_units.cpp)
 
-target_link_libraries(Backend Qt5::Widgets LIMEGUI Bridge)
+target_link_libraries(Backend Qt5::Widgets LIMEGUI Bridge Frontend)
 
-target_include_directories (Backend PUBLIC ${CMAKE_CURRENT_SOURCE_DIR} ${CMAKE_CURRENT_SOURCE_DIR}/../ ${CMAKE_CURRENT_SOURCE_DIR}/../Bridge)
+target_include_directories (Backend PUBLIC ${CMAKE_CURRENT_SOURCE_DIR} ${CMAKE_CURRENT_SOURCE_DIR}/../ 
+${CMAKE_CURRENT_SOURCE_DIR}/../Bridge
+${CMAKE_CURRENT_SOURCE_DIR}/../Menu_Frontend)
