@@ -14,7 +14,7 @@ void MainWindow :: Text_input_register(std::string& msg,int index)
         temp.pop_back();
         value_proc = Sci_to_int(temp);
         std::cout<<value_proc<<std::endl;
-        slider->setValue((int)value_proc);
+        //slider->setValue((int)value_proc);
         slider->setSliderPosition((int)value_proc);
         input_text->clear();
     }

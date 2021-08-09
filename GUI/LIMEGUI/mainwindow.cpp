@@ -78,8 +78,8 @@ MainWindow::MainWindow(QWidget *parent)
     ui->set_get_menu->clear();
     ui->set_get_menu->insertItems(0, QStringList() QT_LABELS_COLLECTION);
     
-    ui->Param_1_val->setRange(0,INT_MAX);
-    ui->Param_2_val->setRange(0,INT_MAX);
+    ui->Param_1_val->setRange(0,INT_MAX-1);
+    ui->Param_2_val->setRange(0,INT_MAX-1);
     //std::cout<<"max int is: "<< INT_MAX <<std::endl;
     //bridge = new IPDI_Bridge();
 }
