@@ -121,10 +121,39 @@ class GUI_Helper_generator():
             print("},")
         print("};")
 
-
+    def Generate_descriptions(self):
+        Description_excel = pd.read_excel('../Documentation/byKeyword.xlsx')
+        print("#ifndef DESCRIPTION_H \r\n#define DESCRIPTION_H \r\n ", file=open('description.h', 'a'))
+        
+        print("#include \"description.h\"",file=open('description.cpp', 'a'))
+        print("#include <vector>",file=open('description.cpp', 'a'))
+        print("#include <mainwindow.h>\r\n",file=open('description.cpp', 'a'))
+        print("std::vector<const char*> info[Qt_labels_size]=\r\n{",file=open('description.cpp', 'a'))
+        final_vector = ""
+        for n in self.QT_labels:
+            rslt_df = self.df[self.df['QT Label'] == n]
+            API_NAME = rslt_df['API Name'].to_string(index=False).replace(" ","")
+            API_NAME = API_NAME.split('\n')
+            vector_string = ""
+            for n in API_NAME:
+                val = Description_excel.index[Description_excel['API Name']==n][0]
+                description = Description_excel['API Description'][val][1:]
+                description = description.replace('\n','\\r\\n\\\n')
+                define_name = n.upper() + "_DESCRIPTION()"
+                description = "#define "+ define_name+ " \""+ description[:-2] + "\"\n"
+                
+                vector_string += define_name+","
+                print(description, file=open('description.h', 'a'))
+            
+            vector_string = "\t{{"+vector_string[:-1]+"}},\r\n"
+            final_vector  +=vector_string
+        
+        final_vector = final_vector[:-3]+"\r\n};"
+        print(final_vector,file=open('description.cpp', 'a'))
+        print("#endif", file=open('description.h', 'a'))
 
 helper = GUI_Helper_generator()
-helper.Generate_cha_dir_vector()
+helper.Generate_descriptions()
 #helper.generate_QT_labels_enum()
 #helper.generate_QT_labels_string()
 #helper.generate_submenus()

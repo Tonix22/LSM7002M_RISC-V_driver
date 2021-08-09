@@ -5,6 +5,9 @@
 #include <QDebug>
 #include <QPushButton>
 #include <utility>
+#include "description.h"
+
+extern std::vector<const char*> info[Qt_labels_size];
 
 std::vector<std::pair<bool,bool>> enable_ch_dir[Qt_labels_size]=
 {
@@ -105,6 +108,8 @@ MainWindow::MainWindow(QWidget *parent)
     ui->API_menu->insertItems(0, QStringList() NONE_API_LIST);
     ui->set_get_menu->clear();
     ui->set_get_menu->insertItems(0, QStringList() QT_LABELS_COLLECTION);
+
+    //bridge = new IPDI_Bridge();
 }
 
 void MainWindow::onButtonClicked()
@@ -201,10 +206,13 @@ void MainWindow ::API_menu_trigger(const QString &text)
 {  
     int set_get_state   = ui->set_get_menu->currentIndex();
     API_ID              = ui->API_menu->currentIndex();
-    if(set_get_state < Qt_labels_size && set_get_state >=0)
+    if(set_get_state < Qt_labels_size && set_get_state >=0 && API_ID>=0)
     {
         ui->chanel_menu->setEnabled(enable_ch_dir[set_get_state][API_ID].first);
         ui->tx_rx_menu->setEnabled(enable_ch_dir[set_get_state][API_ID].second);
+        //printf("%s\r\n",description[set_get_state][API_ID].c_str());
+        ui->Descript_label->setTextFormat(Qt::PlainText);
+        ui->Descript_label->setText(info[set_get_state][API_ID]);
     }
 }
 void MainWindow :: Enable_Disable_CH_print()
@@ -250,7 +258,7 @@ void MainWindow :: Text_param2_changed()
 
 MainWindow::~MainWindow()
 {
-    delete bridge;
+    //delete bridge;
     delete ui;
 }
 

@@ -7,7 +7,7 @@ endif()
 
 find_package(Qt5 COMPONENTS Widgets REQUIRED)
 
-add_library(Backend Input_text.cpp)
+add_library(Backend Input_text.cpp description.cpp)
 
 target_link_libraries(Backend Qt5::Widgets LIMEGUI Bridge)
 
