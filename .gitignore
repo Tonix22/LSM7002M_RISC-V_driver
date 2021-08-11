@@ -4,3 +4,4 @@ GUI/build/CMakeCache.txt
 GUI/QTLibs/build-Bridge-Desktop_Qt_5_15_1_MinGW_64_bit-Debug/*
 GUI/build-LIMEGUI-Desktop_Qt_5_12_11_MinGW_64_bit-Debug/*
 FPGA_FW/openOCD/*
+Installers/*
