@@ -1,0 +1,9 @@
+{
+	"workspaceFolder": "/root/external",
+	"extensions": [
+		"ms-vscode.cpptools",
+		"platformio.platformio-ide"
+	],
+	"mounts": ["source=${localWorkspaceFolder},target=/root/external,type=bind"],
+	"runArgs": ["--device=/dev/bus/usb"]
+}

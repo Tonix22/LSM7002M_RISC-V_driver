@@ -10,7 +10,7 @@ class GUI_Helper_generator():
     def generate_QT_labels_enum(self):
         final_str = "typedef enum\r\n{\r\n"
         for n in self.QT_labels:
-            n = n.replace(" ","_")
+            n = n.replace(" ","_") # hola mundo Hola_mundo
             final_str+="\t"+n+"_num,\r\n"
         final_str+="\tQt_labels_size\r\n}Qt_label_t;\r\n"
         return final_str

@@ -1,0 +1,17 @@
+{
+	"folders": [
+		{
+			"path": "."
+		},
+		{
+			"name": "coprocessorInt",
+			"path": "coprocessorInt"
+		}
+	],
+	"settings": {
+		"files.associations": {
+			"lms7002m_logger.h": "c",
+			"lms7002m.h": "c"
+		}
+	}
+}
