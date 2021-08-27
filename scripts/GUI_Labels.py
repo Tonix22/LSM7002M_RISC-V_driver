@@ -3,9 +3,11 @@ import numpy as np
 
 class GUI_Helper_generator():
     def __init__(self):
-        self.df = pd.read_excel('../Documentation/bydtatype.xlsx')
+        self.df = pd.read_excel('../Documentation/bydtatype.xls')
         self.df = self.df.dropna()
         self.QT_labels = self.df['QT Label'].unique()
+        for n in self.QT_labels:
+            print(n)
 
     def generate_QT_labels_enum(self):
         final_str = "typedef enum\r\n{\r\n"
@@ -184,7 +186,7 @@ class GUI_Helper_generator():
 
 helper = GUI_Helper_generator()
 #helper.gen_function_type_header()
-helper.write_submenus_file()
+#helper.write_submenus_file()
 #helper.Generate_descriptions()
 """
 for n in QT_labels:

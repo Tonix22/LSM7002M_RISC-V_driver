@@ -468,3 +468,6 @@ typedef enum{
 #define RSSI_SUBMENU_COLLECTION PUSH_TO_LIST("rxtsp_read_rssi")
 
 
+#include "common.h"
+
+
