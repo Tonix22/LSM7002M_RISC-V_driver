@@ -1,28 +1,30 @@
 import tkinter as tk
 from tkinter import ttk
 import pandas as pd
+import os
 
-# Leer los archivos Excel
-data_complete = pd.read_excel('/home/tonix/Documents/LSM7002M_RISC-V_driver/Documentation/bydtatype2.xlsx')
-api_descriptions = pd.read_excel('/home/tonix/Documents/LSM7002M_RISC-V_driver/Documentation/LimeAPI_descruption.xlsx')
+#Build the file path relative to this script's location
+script_dir = os.path.dirname(os.path.abspath(__file__))
+file_path = os.path.abspath(os.path.join(script_dir, "../Documentation/AutoGen/AutoGenCode.xlsx"))
+# Read the merged Excel file
+data = pd.read_excel(file_path)
 
-cleaned_data_complete = data_complete[~data_complete.apply(lambda row: row.astype(str).str.contains(r'\*\*\*').any(), axis=1)]
+# Clean the data by removing rows with any '***'
+cleaned_data = data[~data.apply(lambda row: row.astype(str).str.contains(r'\*\*\*').any(), axis=1)]
 
-# Crear diccionario de descripciones
-desc_dict = api_descriptions.set_index('API Name')['API Description'].to_dict()
-
-# Generar estructura con parámetros y descripciones integradas
+# Generate structured info with parameters and integrated descriptions
 structured_info = {}
 param_cols = ['P1_t', 'P2_t', 'P3_t', 'P4_t', 'P5_t']
 
-for qt_label, group in cleaned_data_complete.groupby('QT Label'):
+for qt_label, group in cleaned_data.groupby('QT Label'):
     structured_info[qt_label] = []
     for _, row in group.iterrows():
-        api_name = row["API Name"]
-        description = desc_dict.get(api_name, "Description not found.")
+        api_name = row["Callback"]
+        # Get the description directly from the merged file's column
+        description = row.get("API Description", "Description not found.")
         params = {col: row[col] for col in param_cols if pd.notna(row[col]) and row[col] != 'None'}
         structured_info[qt_label].append({
-            "API Name": api_name,
+            "Callback": api_name,
             "Opcode": row["HEX OPCODE"],
             "Description": description,
             "Parameters": params
@@ -37,7 +39,6 @@ class MainWindow(tk.Tk):
 
         style = ttk.Style(self)
         style.theme_use('clam')
-
         style.configure('TLabel', font=('Arial', 12))
         style.configure('TButton', font=('Arial', 12, 'bold'), foreground='white', background='#0078D7')
 
@@ -46,7 +47,7 @@ class MainWindow(tk.Tk):
         self.cmb_qt_label.pack(fill='x', padx=10)
         self.cmb_qt_label.bind("<<ComboboxSelected>>", self.update_api_names)
 
-        ttk.Label(self, text="API Name:").pack(padx=10, pady=5, anchor="w")
+        ttk.Label(self, text="Callback:").pack(padx=10, pady=5, anchor="w")
         self.cmb_api_name = ttk.Combobox(self, state="readonly")
         self.cmb_api_name.pack(fill='x', padx=10)
         self.cmb_api_name.bind("<<ComboboxSelected>>", self.show_details)
@@ -68,7 +69,7 @@ class MainWindow(tk.Tk):
 
     def update_api_names(self, event):
         qt_label = self.cmb_qt_label.get()
-        api_list = [api['API Name'] for api in structured_info[qt_label]]
+        api_list = [api['Callback'] for api in structured_info[qt_label]]
         self.cmb_api_name.config(values=api_list)
         self.cmb_api_name.current(0)
         self.show_details(None)
@@ -79,7 +80,7 @@ class MainWindow(tk.Tk):
 
         qt_label = self.cmb_qt_label.get()
         api_name = self.cmb_api_name.get()
-        api_info = next((api for api in structured_info[qt_label] if api['API Name'] == api_name), None)
+        api_info = next((api for api in structured_info[qt_label] if api['Callback'] == api_name), None)
 
         if api_info:
             self.lbl_opcode.config(text=f"Opcode: 0x{api_info['Opcode']}")
@@ -91,16 +92,13 @@ class MainWindow(tk.Tk):
                 if 'double' in param_type:
                     slider = ttk.Scale(self.param_frame, from_=0, to=1000, orient='horizontal')
                     slider.grid(row=idx, column=1, padx=5, pady=2, sticky='ew')
-
                     value_label = ttk.Label(self.param_frame, text="000.00")
                     slider.config(command=lambda val, l=slider, lbl=value_label: lbl.config(text=f"{float(val):.2f}".zfill(6)))
                     value_label.grid(row=idx, column=2, padx=10, pady=5, sticky='ew')
-
                     ttk.Label(self.param_frame, text="Escala:").grid(row=idx, column=3, padx=5)
                     unit = ttk.Combobox(self.param_frame, values=['', 'K', 'M', 'G'], width=4)
                     unit.grid(row=idx, column=4, padx=5)
                     unit.current(0)
-
                     self.param_entries[param] = (slider, unit)
                 else:
                     entry = ttk.Entry(self.param_frame)
@@ -112,7 +110,7 @@ class MainWindow(tk.Tk):
     def send_data(self):
         qt_label = self.cmb_qt_label.get()
         api_name = self.cmb_api_name.get()
-        api_info = next((api for api in structured_info[qt_label] if api['API Name'] == api_name), None)
+        api_info = next((api for api in structured_info[qt_label] if api['Callback'] == api_name), None)
 
         if api_info:
             params = {}
@@ -120,14 +118,11 @@ class MainWindow(tk.Tk):
                 if isinstance(widget, tuple):
                     slider, unit = widget
                     val = slider.get()
-                    scale = unit.get()
                     multiplier = {'': 1, 'K': 1e3, 'M': 1e6, 'G': 1e9}.get(unit.get(), 1)
                     params[param] = round(val * multiplier, 2)
                 else:
                     params[param] = widget.get()
-
             print(f"Opcode: 0x{api_info['Opcode']}, Parameters: {params}")
-
 
 if __name__ == "__main__":
     app = MainWindow()
