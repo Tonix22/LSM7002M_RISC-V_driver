@@ -143,13 +143,19 @@ typedef struct Geric_Parameter {
         int sint;             /**< Signed integer value. */
         const int const_int;  /**< Constant integer value. */
         unsigned int uint;    /**< Unsigned integer value. */
-        char* string;         /**< Pointer to a null-terminated string. */
+        const char* string;         /**< Pointer to a null-terminated string. */
         short* short_p;       /**< Pointer to a short integer. */
         long l;               /**< Long integer value. */
         double d;             /**< Double precision floating point value. */
         double* d_pointer;    /**< Pointer to a double precision floating point value. */
         size_t size;          /**< Size value (commonly used for lengths or counts). */
         uint32_t bit_32;      /**< 32-bit unsigned integer, often for bit-level operations. */
+        const LMS7002M_chan_t const_chan;
+        const LMS7002M_dir_t const_dir;
+        const LMS7002M_port_t const_port;
+        const bool const_bool;
+        const double const_double;
+        double* double_ptr;
     } value;                  /**< Union to hold the actual parameter value. */
 } Geric_Parameter;
 
@@ -165,11 +171,10 @@ typedef struct Geric_Parameter {
  * NOTE: In practice, this table should be auto-generated from your Excel files.
  */
 typedef struct {
-    Group_name_enum id;           /* Internal opcode identifier */
     uint32_t opcode;              /* Opcode in hexadecimal */
     const char* QT_Label;         /* API name as produced by LimeGUI */
     int num_params;               /* Number of parameters expected */
-    Geric_Parameter* param_types; /* Array of parameter types */
+    Geric_Parameter* args; /* Array of parameter types */
     void *callback;               /* Callback function pointer */
 } OpcodeDescriptor;
 
