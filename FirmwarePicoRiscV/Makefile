@@ -7,7 +7,9 @@ TEST_SRCS  := $(wildcard RiscvChecks/*.S)
 TEST_OBJS  := $(patsubst RiscvChecks/%.S,RiscvChecks/%.o,$(TEST_SRCS))
 INC_DIRS := firmware \
             firmware/LMS7002M \
-            firmware/platform_generic
+            firmware/platform_generic \
+			firmware/Memory_broker
+
 INCS     := $(addprefix -I,$(INC_DIRS))
 
 # ─────────────── Global config ─────────────────────────────────────────────
@@ -31,7 +33,8 @@ ASFLAGS = -mabi=$(ABI) -march=$(ISA)
 # ─────────────── Source/object lists ──────────────────────────────────────
 FW_C_SRCS := $(wildcard firmware/*.c) \
              $(wildcard firmware/LMS7002M_lib/*.c) \
-             $(wildcard firmware/platform_generic/*.c)
+             $(wildcard firmware/platform_generic/*.c) \
+             $(wildcard firmware/Memory_broker/*.c)
 
 FW_S_SRCS := $(wildcard firmware/*.S)
 FIRMWARE_OBJS = $(patsubst firmware/%.c,firmware/%.o,$(FW_C_SRCS)) \
@@ -57,10 +60,15 @@ RiscvChecks/%.o : RiscvChecks/%.S RiscvChecks/riscv_test.h RiscvChecks/test_macr
 		-DTEST_FUNC_RET=$(notdir $(basename $<))_ret \
 		-o $@ $<
 
+firmware/Memory_broker/%.o : CFLAGS += \
+    -Wno-unused-parameter -Wno-unused-variable -Wno-char-subscripts \
+    -Wno-missing-prototypes -Wno-maybe-uninitialized -Wno-sign-compare -Wno-unused-parameter \
+	-Wno-unused-function -Wno-sign-compare -Wno-uninitialized
+
 # Ignore warnings in the platformgeneric library
 firmware/platform_generic/%.o : CFLAGS += \
     -Wno-unused-parameter -Wno-unused-variable -Wno-char-subscripts \
-    -Wno-missing-prototypes -Wno-maybe-uninitialized -Wno-sign-compare\
+    -Wno-missing-prototypes -Wno-maybe-uninitialized -Wno-sign-compare -Wno-unused-parameter
 
 # Ignore warnings in the LMS7002M library
 # Adding PI to the LMS7002M library
