@@ -8,7 +8,8 @@ TEST_OBJS  := $(patsubst RiscvChecks/%.S,RiscvChecks/%.o,$(TEST_SRCS))
 INC_DIRS := firmware \
             firmware/LMS7002M \
             firmware/platform_generic \
-			firmware/Memory_broker
+			firmware/Memory_broker \
+			firmware/Parser
 
 INCS     := $(addprefix -I,$(INC_DIRS))
 
@@ -34,7 +35,8 @@ ASFLAGS = -mabi=$(ABI) -march=$(ISA)
 FW_C_SRCS := $(wildcard firmware/*.c) \
              $(wildcard firmware/LMS7002M_lib/*.c) \
              $(wildcard firmware/platform_generic/*.c) \
-             $(wildcard firmware/Memory_broker/*.c)
+             $(wildcard firmware/Memory_broker/*.c) \
+			 $(wildcard firmware/Parser/*.c)
 
 FW_S_SRCS := $(wildcard firmware/*.S)
 FIRMWARE_OBJS = $(patsubst firmware/%.c,firmware/%.o,$(FW_C_SRCS)) \

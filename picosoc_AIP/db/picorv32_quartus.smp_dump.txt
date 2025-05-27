@@ -1,0 +1,26 @@
+
+State Machine - |DE10_SOC|picosoc_AIP:soc|ID00001001_dummy:DUMMY0|ID00001001_dummyCore:CORE|ID00001001_dummyCtrl:CNTRL|state
+Name state.WAIT_A state.WAIT_B state.IP_PROC state.DELAY state.CONFIG state.STANDBY 
+state.STANDBY 0 0 0 0 0 0 
+state.CONFIG 0 0 0 0 1 1 
+state.DELAY 0 0 0 1 0 1 
+state.IP_PROC 0 0 1 0 0 1 
+state.WAIT_B 0 1 0 0 0 1 
+state.WAIT_A 1 0 0 0 0 1 
+
+State Machine - |DE10_SOC|picosoc_AIP:soc|picorv32:cpu|mem_wordsize
+Name mem_wordsize.00 mem_wordsize.10 mem_wordsize.01 
+mem_wordsize.00 0 0 0 
+mem_wordsize.01 1 0 1 
+mem_wordsize.10 1 1 0 
+
+State Machine - |DE10_SOC|picosoc_AIP:soc|picorv32:cpu|cpu_state
+Name cpu_state.cpu_state_trap cpu_state.cpu_state_fetch cpu_state.cpu_state_ld_rs1 cpu_state.cpu_state_ld_rs2 cpu_state.cpu_state_exec cpu_state.cpu_state_shift cpu_state.cpu_state_stmem cpu_state.cpu_state_ldmem 
+cpu_state.cpu_state_ldmem 0 0 0 0 0 0 0 0 
+cpu_state.cpu_state_stmem 0 0 0 0 0 0 1 1 
+cpu_state.cpu_state_shift 0 0 0 0 0 1 0 1 
+cpu_state.cpu_state_exec 0 0 0 0 1 0 0 1 
+cpu_state.cpu_state_ld_rs2 0 0 0 1 0 0 0 1 
+cpu_state.cpu_state_ld_rs1 0 0 1 0 0 0 0 1 
+cpu_state.cpu_state_fetch 0 1 0 0 0 0 0 1 
+cpu_state.cpu_state_trap 1 0 0 0 0 0 0 1 

@@ -1,8 +1,5 @@
 #include "parser_typedefs.h"
 #include "parser.h"
-#include "Geric_Parameter.h" // Ensure Geric_Parameter is defined
-#include "opcode_constants.h" // Ensure opcode constants are defined
-
 /* Auto-generated file: Grouped OpcodeDescriptor arrays and global all_descriptors array */
 
 /* Opcode descriptors for group AFE_ENABLE_NUM */

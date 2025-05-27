@@ -1,0 +1,18 @@
+Fitter Status : Successful - Mon May 26 23:45:03 2025
+Quartus Prime Version : 22.1std.0 Build 915 10/25/2022 SC Lite Edition
+Revision Name : picorv32_quartus
+Top-level Entity Name : DE10_SOC
+Family : MAX 10
+Device : 10M50DAF484C7G
+Timing Models : Final
+Total logic elements : 45,937 / 49,760 ( 92 % )
+    Total combinational functions : 29,320 / 49,760 ( 59 % )
+    Dedicated logic registers : 34,282 / 49,760 ( 69 % )
+Total registers : 34282
+Total pins : 28 / 360 ( 8 % )
+Total virtual pins : 0
+Total memory bits : 71,936 / 1,677,312 ( 4 % )
+Embedded Multiplier 9-bit elements : 8 / 288 ( 3 % )
+Total PLLs : 0 / 4 ( 0 % )
+UFM blocks : 0 / 1 ( 0 % )
+ADC blocks : 0 / 2 ( 0 % )

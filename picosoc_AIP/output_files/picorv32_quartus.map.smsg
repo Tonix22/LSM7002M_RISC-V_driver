@@ -1,0 +1,26 @@
+Warning (10268): Verilog HDL information at DE10_SOC.v(85): always construct contains both blocking and non-blocking assignments File: /home/tonix/Documents/picoRV-32/picosoc/DE10_SOC.v Line: 85
+Warning (10268): Verilog HDL information at DE10_SOC.v(98): always construct contains both blocking and non-blocking assignments File: /home/tonix/Documents/picoRV-32/picosoc/DE10_SOC.v Line: 98
+Warning (10268): Verilog HDL information at simple_dual_port_ram_single_clk.v(32): always construct contains both blocking and non-blocking assignments File: /home/tonix/Documents/picoRV-32/mods/basicblocks/memories/simple_dual_port_ram_single_clk.v Line: 32
+Warning (10273): Verilog HDL warning at picorv32m.v(300): extended using "x" or "z" File: /home/tonix/Documents/picoRV-32/picosoc/picorv32m.v Line: 300
+Warning (10273): Verilog HDL warning at picorv32m.v(320): extended using "x" or "z" File: /home/tonix/Documents/picoRV-32/picosoc/picorv32m.v Line: 320
+Warning (10273): Verilog HDL warning at picorv32m.v(327): extended using "x" or "z" File: /home/tonix/Documents/picoRV-32/picosoc/picorv32m.v Line: 327
+Warning (10273): Verilog HDL warning at picorv32m.v(386): extended using "x" or "z" File: /home/tonix/Documents/picoRV-32/picosoc/picorv32m.v Line: 386
+Warning (10273): Verilog HDL warning at picorv32m.v(388): extended using "x" or "z" File: /home/tonix/Documents/picoRV-32/picosoc/picorv32m.v Line: 388
+Warning (10273): Verilog HDL warning at picorv32m.v(1038): extended using "x" or "z" File: /home/tonix/Documents/picoRV-32/picosoc/picorv32m.v Line: 1038
+Warning (10273): Verilog HDL warning at picorv32m.v(1250): extended using "x" or "z" File: /home/tonix/Documents/picoRV-32/picosoc/picorv32m.v Line: 1250
+Warning (10273): Verilog HDL warning at picorv32m.v(1267): extended using "x" or "z" File: /home/tonix/Documents/picoRV-32/picosoc/picorv32m.v Line: 1267
+Warning (10273): Verilog HDL warning at picorv32m.v(1311): extended using "x" or "z" File: /home/tonix/Documents/picoRV-32/picosoc/picorv32m.v Line: 1311
+Warning (10273): Verilog HDL warning at picorv32m.v(1349): extended using "x" or "z" File: /home/tonix/Documents/picoRV-32/picosoc/picorv32m.v Line: 1349
+Warning (10273): Verilog HDL warning at picorv32m.v(1404): extended using "x" or "z" File: /home/tonix/Documents/picoRV-32/picosoc/picorv32m.v Line: 1404
+Warning (10273): Verilog HDL warning at picorv32m.v(1405): extended using "x" or "z" File: /home/tonix/Documents/picoRV-32/picosoc/picorv32m.v Line: 1405
+Warning (10273): Verilog HDL warning at picorv32m.v(1417): extended using "x" or "z" File: /home/tonix/Documents/picoRV-32/picosoc/picorv32m.v Line: 1417
+Warning (10273): Verilog HDL warning at picorv32m.v(1418): extended using "x" or "z" File: /home/tonix/Documents/picoRV-32/picosoc/picorv32m.v Line: 1418
+Warning (10273): Verilog HDL warning at picorv32m.v(1436): extended using "x" or "z" File: /home/tonix/Documents/picoRV-32/picosoc/picorv32m.v Line: 1436
+Warning (10273): Verilog HDL warning at picorv32m.v(1437): extended using "x" or "z" File: /home/tonix/Documents/picoRV-32/picosoc/picorv32m.v Line: 1437
+Warning (10273): Verilog HDL warning at picorv32m.v(1440): extended using "x" or "z" File: /home/tonix/Documents/picoRV-32/picosoc/picorv32m.v Line: 1440
+Warning (10273): Verilog HDL warning at picorv32m.v(1455): extended using "x" or "z" File: /home/tonix/Documents/picoRV-32/picosoc/picorv32m.v Line: 1455
+Warning (10273): Verilog HDL warning at picorv32m.v(1580): extended using "x" or "z" File: /home/tonix/Documents/picoRV-32/picosoc/picorv32m.v Line: 1580
+Warning (10273): Verilog HDL warning at picorv32m.v(1581): extended using "x" or "z" File: /home/tonix/Documents/picoRV-32/picosoc/picorv32m.v Line: 1581
+Warning (10273): Verilog HDL warning at picorv32m.v(1974): extended using "x" or "z" File: /home/tonix/Documents/picoRV-32/picosoc/picorv32m.v Line: 1974
+Warning (10268): Verilog HDL information at picorv32m.v(1402): always construct contains both blocking and non-blocking assignments File: /home/tonix/Documents/picoRV-32/picosoc/picorv32m.v Line: 1402
+Warning (10273): Verilog HDL warning at picorv32m.v(2467): extended using "x" or "z" File: /home/tonix/Documents/picoRV-32/picosoc/picorv32m.v Line: 2467

@@ -64,13 +64,21 @@ def generate_typedefs(excel_file, output_file):
     
     with open(output_file, 'w') as f:
         f.write("/* Auto-generated typedefs grouped by number of parameters */\n\n")
+        f.write("#ifndef COMMON_H_\n")
+        f.write("#define COMMON_H_\n\n")
+        f.write("#include \"LMS7002M.h\"\n")
+
         # Process groups in order of increasing parameter count
         for num_params, group in sorted(typedef_groups, key=lambda x: x[0]):
             f.write(f"// Typedefs for functions with {num_params} parameter(s)\n")
             for idx, row in group.iterrows():
                 f.write(row["Typedef"] + "\n")
             f.write("\n")
-    
+
+        f.write("#endif // COMMON_H_\n")
+        f.write("\n")
+
+    print("Typedefs in file:", output_file)
 
 def sanitize_identifier(name):
     """Generate a valid identifier from a given name."""
@@ -107,8 +115,8 @@ def generate_opcode_descriptors(excel_file, output_file):
         # Write the header includes and additional necessary headers
         f.write('#include "parser_typedefs.h"\n')
         f.write('#include "parser.h"\n')
-        f.write('#include "Geric_Parameter.h" // Ensure Geric_Parameter is defined\n')
-        f.write('#include "opcode_constants.h" // Ensure opcode constants are defined\n\n')
+        #f.write('#include "Geric_Parameter.h" // Ensure Geric_Parameter is defined\n')
+        #f.write('#include "opcode_constants.h" // Ensure opcode constants are defined\n\n')
         
         f.write("/* Auto-generated file: Grouped OpcodeDescriptor arrays and global all_descriptors array */\n\n")
         
@@ -331,5 +339,5 @@ if __name__ == '__main__':
     output_file = "parser_opcodes.c"
     generate_opcode_descriptors(excel_file, output_file)
 
-    output_file = "execute_opcode.c"
-    generate_execute_opcode(excel_file, output_file)
+    #output_file = "execute_opcode.c"
+    #generate_execute_opcode(excel_file, output_file)

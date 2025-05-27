@@ -1,5 +1,9 @@
 /* Auto-generated typedefs grouped by number of parameters */
 
+#ifndef COMMON_H_
+#define COMMON_H_
+
+#include "LMS7002M.h"
 // Typedefs for functions with 1 parameter(s)
 typedef LMS7002M_t* create_num_callback(LMS7002M_spi_transact_t);
 typedef int set_gfir_taps_num_callback(LMS7002M_t *);
@@ -39,4 +43,6 @@ typedef void txstp_correction_num_callback(LMS7002M_t *, const LMS7002M_chan_t, 
 
 // Typedefs for functions with 5 parameter(s)
 typedef int set_lo_freq_num_callback(LMS7002M_t *,  const LMS7002M_dir_t ,  const double ,  const double ,  double *);
+
+#endif // COMMON_H_
 
