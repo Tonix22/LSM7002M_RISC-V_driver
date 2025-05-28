@@ -175,7 +175,7 @@ typedef struct {
     const char* QT_Label;         /* API name as produced by LimeGUI */
     int num_params;               /* Number of parameters expected */
     Geric_Parameter* args; /* Array of parameter types */
-    void *callback;               /* Callback function pointer */
+    void (*callback)(void);       /* Callback function pointer */
 } OpcodeDescriptor;
 
 // Prototype for an opcode callback function (currently commented out).

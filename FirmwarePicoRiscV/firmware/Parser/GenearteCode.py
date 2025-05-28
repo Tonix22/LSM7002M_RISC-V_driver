@@ -7,6 +7,33 @@ def generate_header_guard(filename):
     guard = re.sub(r'\W+', '_', filename.upper())
     return guard
 
+def generate_typedef_name(row, param_cols):
+    """
+    Constructs a C-style typedef declaration string from a row of the DataFrame.
+    """
+    # Clean return type
+    return_type = row['Return_t']
+    return_type_stripped = return_type.replace('*', '')
+
+    # Determine representative parameter (2nd if available and non-empty, otherwise 1st)
+    rep_param = row[param_cols[1]] if len(param_cols) > 1 and row[param_cols[1]] else row[param_cols[0]]
+    rep_param_clean = (
+        rep_param.replace('*', '')
+                 .replace(' ', '')
+                 .replace('const', '')
+                 .replace('LMS7002M_', '')
+    )
+
+    # Filter non-empty parameters for the function signature
+    param_list = [row[col] for col in param_cols if row[col]]
+
+    # Build typedef string
+    typedef_name = f"{row['Group Name']}_{return_type_stripped}_{rep_param_clean}_cb"
+    typedef_signature = f"typedef {return_type} {typedef_name}({', '.join(param_list)});"
+
+    return typedef_signature
+
+
 def prepare_typedef_groups(excel_file):
     """
     Reads the Excel file, processes the data, and returns typedef_groups.
@@ -28,6 +55,7 @@ def prepare_typedef_groups(excel_file):
     param_cols = ["P0_t", "P1_t", "P2_t", "P3_t", "P4_t", "P5_t"]
     df[param_cols] = df[param_cols].fillna("")
 
+
     # Deduplicate typedefs based on unique combinations of Return_t and parameter columns.
     grouped_df = (
         df.groupby(["Return_t"] + param_cols, as_index=False)
@@ -42,13 +70,8 @@ def prepare_typedef_groups(excel_file):
     # Add a new column to count how many parameter columns are non-empty
     grouped_df["num_params"] = grouped_df[param_cols].apply(lambda row: sum(1 for x in row if x != ""), axis=1)
     
-    # Generate a typedef line using the Return_t, Group Name, and the parameter types.
-    grouped_df["Typedef"] = grouped_df.apply(
-        lambda row: f"typedef {row['Return_t']} {row['Group Name']}_callback(" +
-                    ", ".join([str(row[col]) for col in param_cols if row[col] != ""]) +
-                    ");",
-        axis=1
-    )
+
+    grouped_df["Typedef"] = grouped_df.apply(lambda row: generate_typedef_name(row, param_cols), axis=1)
 
     # Group the resulting typedefs by the parameter count (ignoring those with 0 parameters)
     typedef_groups = grouped_df[grouped_df["num_params"] > 0].groupby("num_params")
@@ -115,6 +138,8 @@ def generate_opcode_descriptors(excel_file, output_file):
         # Write the header includes and additional necessary headers
         f.write('#include "parser_typedefs.h"\n')
         f.write('#include "parser.h"\n')
+        f.write('#include "LMS7002M_filter_cal.h"\n')
+        f.write('#include "parser_opcodes.h"\n')
         #f.write('#include "Geric_Parameter.h" // Ensure Geric_Parameter is defined\n')
         #f.write('#include "opcode_constants.h" // Ensure opcode constants are defined\n\n')
         
@@ -155,8 +180,8 @@ def generate_opcode_descriptors(excel_file, output_file):
                 f.write("        .QT_Label = \"{0}\",\n".format(qt_label))
                 f.write("        .num_params = {0},\n".format(num_params))
                 # Set .args to NULL with a comment showing the non-None parameter types.
-                f.write("        .args = NULL; // " + comment_hint + "\n")
-                f.write("        .callback = (void*){0}\n".format(callback))
+                f.write("        .args = NULL, // " + comment_hint + "\n")
+                f.write("        .callback = (void (*)(void)){0}\n".format(callback))
                 f.write("    },\n")
             
             f.write("};\n\n")
@@ -214,6 +239,20 @@ def generate_opcode_descriptors(excel_file, output_file):
         f.write("}\n")
     
     print("Opcode descriptors generated in file:", output_file)
+
+def generate_opcode_descriptors_header(output_file):
+    """
+    Generates the header file for opcode descriptors.
+    """
+    with open(output_file, 'w') as f:
+        f.write("/* Auto-generated header file for opcode descriptors */\n\n")
+        f.write("#ifndef PARSER_OPCODES_H_\n")
+        f.write("#define PARSER_OPCODES_H_\n\n")
+        f.write("#include \"parser.h\"\n\n")
+        f.write("OpcodeDescriptor* getOpcodeDescriptor(uint32_t opcode);\n\n")
+        f.write("#endif // PARSER_OPCODES_H_\n")
+
+    print("Opcode descriptors header generated in file:", output_file)
 
 def generate_execute_opcode(excel_file, output_file):
     """
@@ -338,6 +377,9 @@ if __name__ == '__main__':
     # Output C source file name (for example, "parser_opcodes.c")
     output_file = "parser_opcodes.c"
     generate_opcode_descriptors(excel_file, output_file)
+
+    output_file = "parser_opcodes.h"
+    generate_opcode_descriptors_header(output_file)
 
     #output_file = "execute_opcode.c"
     #generate_execute_opcode(excel_file, output_file)

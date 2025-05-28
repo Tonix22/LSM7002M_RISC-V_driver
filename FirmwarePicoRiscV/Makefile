@@ -9,6 +9,7 @@ INC_DIRS := firmware \
             firmware/LMS7002M \
             firmware/platform_generic \
 			firmware/Memory_broker \
+			firmware/LMS7002M_lib \
 			firmware/Parser
 
 INCS     := $(addprefix -I,$(INC_DIRS))

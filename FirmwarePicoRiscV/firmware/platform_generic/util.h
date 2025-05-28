@@ -113,7 +113,7 @@ typedef SSIZE_T ssize_t;
 /******************************************************************************/
 /************************ Functions Declarations ******************************/
 /******************************************************************************/
-int32_t clk_prepare_enable(struct clk *clk);
+//int32_t clk_prepare_enable(struct clk *clk);
 
 uint32_t int_sqrt(uint32_t x);
 int32_t ilog2(int32_t x);
