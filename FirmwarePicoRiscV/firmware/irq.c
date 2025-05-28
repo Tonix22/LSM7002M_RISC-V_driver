@@ -30,7 +30,7 @@ uint32_t *irq(uint32_t *regs, uint32_t irqs)
 			else
 				print_hex(instr, 4);
 			print_str("\n");
-			__asm__ volatile ("ebreak");
+			//__asm__ volatile ("ebreak");
 		}
 	}
 
@@ -132,7 +132,7 @@ uint32_t *irq(uint32_t *regs, uint32_t irqs)
 		print_dec(timer_irq_count);
 		print_str("\n");
 
-		__asm__ volatile ("ebreak");
+		//__asm__ volatile ("ebreak");
 	}
 
 	return regs;

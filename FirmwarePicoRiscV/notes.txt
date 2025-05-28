@@ -1,0 +1,11 @@
+riscv32-unknown-elf-gdb firmware/firmware.elf
+(gdb) file firmware/firmware.elf
+
+(gdb) target remote localhost:1234
+
+(gdb) break _start
+
+(gdb) continue
+
+(gdb) break main
+(gdb) continue
