@@ -1,11 +1,11 @@
 /* Auto-generated typedefs grouped by number of parameters */
 
-#ifndef COMMON_H_
-#define COMMON_H_
+#ifndef PARSERTYPEDEF_H
+#define PARSERTYPEDEF_H
 
 #include "LMS7002M.h"
 // Typedefs for functions with 1 parameter(s)
-typedef LMS7002M_t* create_num_LMS7002M_t_spi_transact_t_cb(LMS7002M_spi_transact_t);
+typedef LMS7002M_t* create_num_t_spi_transact_t_cb(LMS7002M_spi_transact_t);
 typedef int set_gfir_taps_num_int_t_cb(LMS7002M_t *);
 typedef void one_param_lms7002m_t_num_void_t_cb(LMS7002M_t *);
 
@@ -44,5 +44,5 @@ typedef void txstp_correction_num_void_chan_t_cb(LMS7002M_t *, const LMS7002M_ch
 // Typedefs for functions with 5 parameter(s)
 typedef int set_lo_freq_num_int_dir_t_cb(LMS7002M_t *,  const LMS7002M_dir_t ,  const double ,  const double ,  double *);
 
-#endif // COMMON_H_
+#endif // PARSERTYPEDEF_H
 

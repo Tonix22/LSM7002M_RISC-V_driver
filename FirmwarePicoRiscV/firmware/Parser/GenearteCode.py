@@ -7,30 +7,41 @@ def generate_header_guard(filename):
     guard = re.sub(r'\W+', '_', filename.upper())
     return guard
 
+def clean_type(type_str):
+    """Remove pointers, spaces, 'const', and 'LMS7002M_' from a type string."""
+    if not isinstance(type_str, str):
+        return ""
+    return (
+        type_str.replace('*', '')
+                .replace(' ', '')
+                .replace('const', '')
+                .replace('LMS7002M_', '')
+    )
+
+def get_representative_param(row, param_cols):
+    """Return the representative parameter: 2nd if available and non-empty, else 1st."""
+    if len(param_cols) > 1 and row.get(param_cols[1], ""):
+        return row[param_cols[1]]
+    return row[param_cols[0]]
+
+def get_typedef_name(row, param_cols):
+    """
+    Generate the typedef name string for a callback based on the row and parameter columns.
+    """
+    return_type_stripped = clean_type(row['Return_t'])
+    rep_param_clean = clean_type(get_representative_param(row, param_cols))
+    group_name = row['Group Name']
+    typedef_name = f"{group_name}_{return_type_stripped}_{rep_param_clean}_cb"
+    return typedef_name
+
 def generate_typedef_name(row, param_cols):
     """
     Constructs a C-style typedef declaration string from a row of the DataFrame.
     """
-    # Clean return type
     return_type = row['Return_t']
-    return_type_stripped = return_type.replace('*', '')
-
-    # Determine representative parameter (2nd if available and non-empty, otherwise 1st)
-    rep_param = row[param_cols[1]] if len(param_cols) > 1 and row[param_cols[1]] else row[param_cols[0]]
-    rep_param_clean = (
-        rep_param.replace('*', '')
-                 .replace(' ', '')
-                 .replace('const', '')
-                 .replace('LMS7002M_', '')
-    )
-
-    # Filter non-empty parameters for the function signature
+    typedef_name = get_typedef_name(row, param_cols)
     param_list = [row[col] for col in param_cols if row[col]]
-
-    # Build typedef string
-    typedef_name = f"{row['Group Name']}_{return_type_stripped}_{rep_param_clean}_cb"
     typedef_signature = f"typedef {return_type} {typedef_name}({', '.join(param_list)});"
-
     return typedef_signature
 
 
@@ -71,7 +82,9 @@ def prepare_typedef_groups(excel_file):
     grouped_df["num_params"] = grouped_df[param_cols].apply(lambda row: sum(1 for x in row if x != ""), axis=1)
     
 
-    grouped_df["Typedef"] = grouped_df.apply(lambda row: generate_typedef_name(row, param_cols), axis=1)
+    grouped_df["TypedefHeader"] = grouped_df.apply(lambda row: generate_typedef_name(row, param_cols), axis=1)
+
+    grouped_df["TypedefName"] = grouped_df.apply(lambda row: get_typedef_name(row, param_cols), axis=1)
 
     # Group the resulting typedefs by the parameter count (ignoring those with 0 parameters)
     typedef_groups = grouped_df[grouped_df["num_params"] > 0].groupby("num_params")
@@ -87,18 +100,18 @@ def generate_typedefs(excel_file, output_file):
     
     with open(output_file, 'w') as f:
         f.write("/* Auto-generated typedefs grouped by number of parameters */\n\n")
-        f.write("#ifndef COMMON_H_\n")
-        f.write("#define COMMON_H_\n\n")
+        f.write("#ifndef PARSERTYPEDEF_H\n")
+        f.write("#define PARSERTYPEDEF_H\n\n")
         f.write("#include \"LMS7002M.h\"\n")
 
         # Process groups in order of increasing parameter count
         for num_params, group in sorted(typedef_groups, key=lambda x: x[0]):
             f.write(f"// Typedefs for functions with {num_params} parameter(s)\n")
             for idx, row in group.iterrows():
-                f.write(row["Typedef"] + "\n")
+                f.write(row["TypedefHeader"] + "\n")
             f.write("\n")
 
-        f.write("#endif // COMMON_H_\n")
+        f.write("#endif // PARSERTYPEDEF_H\n")
         f.write("\n")
 
     print("Typedefs in file:", output_file)
@@ -265,7 +278,9 @@ def generate_execute_opcode(excel_file, output_file):
     with open(output_file, 'w') as f:
         # Write the function header
         f.write("#include \"parser.h\" \n")
-        f.write("#include \"parser_typedefs.h\" \n\n")
+        f.write("#include \"parser_typedefs.h\" \n")
+        f.write("#include \"execute_opcode.h\" \n\n")
+        f.write("#include \"parser_opcodes.h\" \n")
         f.write("/**\n")
         f.write(" * @brief Executes the callback function for a given opcode.\n")
         f.write(" *\n")
@@ -282,18 +297,18 @@ def generate_execute_opcode(excel_file, output_file):
         f.write("    // Retrieve the descriptor for the given opcode\n")
         f.write("    OpcodeDescriptor* descriptor = getOpcodeDescriptor(opcode);\n")
         f.write("    if (descriptor == NULL) {\n")
-        f.write("        fprintf(stderr, \"Error: Opcode 0x%X not found.\\n\", opcode);\n")
+        f.write("        fprintf(stderr, \"Error: Opcode 0x%X not found.\\n\", (unsigned int)opcode);\n")
         f.write("        return -1; // Opcode not found\n")
         f.write("    }\n\n")
         f.write("    // Validate the number of parameters\n")
-        f.write("    if (descriptor->num_params != buffer_size) {\n")
+        f.write("    if ((size_t)(descriptor->num_params) != buffer_size) {\n")
         f.write("        fprintf(stderr, \"Error: Invalid number of arguments for opcode 0x%X. Expected %d, got %zu.\\n\",\n")
-        f.write("                opcode, descriptor->num_params, buffer_size);\n")
+        f.write("                (unsigned int)opcode, descriptor->num_params, buffer_size);\n")
         f.write("        return -2; // Invalid number of arguments\n")
         f.write("    }\n\n")
         f.write("    // Ensure the callback function is defined\n")
         f.write("    if (descriptor->callback == NULL) {\n")
-        f.write("        fprintf(stderr, \"Error: No callback defined for opcode 0x%X.\\n\", opcode);\n")
+        f.write("        fprintf(stderr, \"Error: No callback defined for opcode 0x%X.\\n\", (unsigned int)opcode);\n")
         f.write("        return -3; // No callback defined\n")
         f.write("    }\n\n")
         f.write("    // Dynamically call the callback function based on the number of parameters\n")
@@ -302,17 +317,16 @@ def generate_execute_opcode(excel_file, output_file):
         # Generate switch cases for each unique number of parameters
         for num_params, group in sorted(typedef_groups, key=lambda x: x[0]):
             f.write(f"        case {num_params}: {{\n")
-            f.write("          switch (opcode): { \n")
+            f.write("          switch (opcode) { \n")
             for idx, row in group.iterrows():
-                typedef_name = row["Group Name"] + "_callback"
+                typedef_name = row["TypedefName"]
                 opcode = [f"0x{x.strip()}" for x in row["HEX OPCODE"].split(",")]
                 callbackNames = row["Callback"]
                 formatted_callbacks = "/"+"*"*180+"\n\t\t\t* " + "\n\t\t\t* ".join(x.strip() for x in callbackNames.split(",")) + "\n\t\t\t"+"*"*180+"/"
 
-                str_opcode = ", ".join(opcode)
                 f.write(f"            {formatted_callbacks}\n")
-                f.write(f"            case {str_opcode}:\n")
-                
+                for op in opcode:
+                    f.write(f"            case {op}:\n")
 
                 param_casts = []
                 for i in range(num_params):
@@ -325,7 +339,7 @@ def generate_execute_opcode(excel_file, output_file):
                         param_casts.append(f"lms")
                     elif param_type == "bool":
                         param_casts.append(f"buffer[{i}].value.b")
-                    elif param_type == "size_t":
+                    elif param_type == "const size_t":
                         param_casts.append(f"buffer[{i}].value.size")
                     elif param_type == "const char *":
                         param_casts.append(f"buffer[{i}].value.string")
@@ -357,13 +371,24 @@ def generate_execute_opcode(excel_file, output_file):
         # Default case for unsupported number of parameters
         f.write("        default:\n")
         f.write("            fprintf(stderr, \"Error: Unsupported number of parameters (%d) for opcode 0x%X.\\n\",\n")
-        f.write("                    descriptor->num_params, opcode);\n")
+        f.write("                    descriptor->num_params, (unsigned int)opcode);\n")
         f.write("            return -4; // Unsupported number of parameters\n")
         f.write("    }\n\n")
         f.write("    return 0; // Success\n")
         f.write("}\n")
 
     print("executeOpcode function generated in file:", output_file)
+
+def generate_execute_opcode_header(output_file):
+    with open(output_file, 'w') as f:
+        f.write("#ifndef EXECUTE_OPCODE_H_\n")
+        f.write("#define EXECUTE_OPCODE_H_\n\n")
+        f.write("#include \"LMS7002M.h\"\n")
+        f.write("#include \"parser.h\"\n")
+        f.write("#include \"parser_typedefs.h\"\n\n")
+        f.write("int executeOpcode(LMS7002M_t *lms, uint32_t opcode, Geric_Parameter* buffer, size_t buffer_size);\n\n")
+        f.write("#endif // EXECUTE_OPCODE_H_\n\n")
+
 
 
 if __name__ == '__main__':
@@ -381,5 +406,8 @@ if __name__ == '__main__':
     output_file = "parser_opcodes.h"
     generate_opcode_descriptors_header(output_file)
 
-    #output_file = "execute_opcode.c"
-    #generate_execute_opcode(excel_file, output_file)
+    output_file = "execute_opcode.c"
+    generate_execute_opcode(excel_file, output_file)
+
+    output_file = "execute_opcode.h"
+    generate_execute_opcode_header(output_file)
